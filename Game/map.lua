@@ -21,7 +21,25 @@ function map:generate( )
 		map.data[y] = {}
 		for x = 1, mapTilesX do
 			map.data[y][x] = 1
-			image:renderImage("WATER_TEX",map_offsetX-x*32,map_offsetY-y*32)
+
+		end
+	end
+end
+
+function map:draw( )
+	for y = 1, mapTilesY do
+		for x = 1, mapTilesX do
+			if map.data[y][x] == 1 then
+				image:renderImage("WATER_TEX",map_offsetX-x*32,map_offsetY-y*32)
+			end
+		end
+	end
+end
+
+function map:randomValues( ) -- just to test if any residual props/images remain rendering! 
+	for y = 1, mapTilesY do
+		for x = 1, mapTilesX do
+			map.data[y][x] = math.random(1,3)
 		end
 	end
 end

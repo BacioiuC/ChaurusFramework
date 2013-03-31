@@ -15,31 +15,24 @@ core:seWindow(resX, resY)
 core:setViewPort(ViewPort1, resX, resY, 1)
 core:newLayer(Layer1, 1)
 
-core:_debugRenderLayer(1)
+MOAISim.setStep(1/60)
 
 
+core:_debugRenderLayer(1) -- Still playing around with this.
 
-
-
-mainThread = MOAICoroutine.new()
 
 image:init( )
---Game:init( )
-
-image:newTexture("media/pimp.png",1,"PIMP")
-image:newTexture("media/water.png",1,"WATER_TEX")
-image:renderImage("PIMP",-100,0)
-image:renderImage("WATER_TEX",32,32)
-image:renderImage("WATER_TEX",32,64)
-image:renderImage("PIMP",200,32)
---image:dropImage("PIMP")
-image:renderImage("PIMP",200,100)
-
+Game:init( )
 
 function GameLoop( )
-	Game:update( )
+	while true do
+        FRAME = MOAISim.getElapsedFrames()
+        Game:loop( )
+        coroutine.yield()
+    end
 end
 
+mainThread = MOAICoroutine.new()
 mainThread:run(GameLoop)
 
 
