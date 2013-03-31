@@ -1,35 +1,74 @@
-function core:newImage(_fileName, _parrentLayer)
+image = {}
+
+function image:init( )
+	self.imageTable = {}
+end
+
+function image:newTexture(_fileName, _parrentLayer, _name)
+
 	local temp = {
 		id = #self.imageTable + 1,
 		pathToImage = _fileName,
 		image = nil,
 		prop = nil,
 		layer = _parrentLayer,
+		name = _name,
+		texture = nil,
 	}
 	table.insert(self.imageTable, temp)
-	self.imageTable[#self.imageTable].image = MOAIGfxQuad2D.new( )
-	self.imageTable[#self.imageTable].image:setTexture(_fileName)
-	self.imageTable[#self.imageTable].image:setRect(0,0,32,32)
+	
+	self.imageTable[#self.imageTable].texture = MOAITexture.new ()
 
-	-- all images are assigned to a prop and a layer by default.
-	self.imageTable[#self.imageTable].prop = MOAIProp2D.new()
-	self.imageTable[#self.imageTable].prop:setDeck(self.imageTable[#self.imageTable].image)
-	self.layerTable[self.imageTable[#self.imageTable].layer].layer:insertProp( self.imageTable[#self.imageTable].prop )
+	if self.imageTable[#self.imageTable].texture ~= nil then
+		print("TEXTURE ARRAY = OK")
+	else
+		print("TEXTURE ARRAY = NO NO")
+	end
+	self.imageTable[#self.imageTable].texture:setFilter ( MOAITexture.GL_LINEAR_MIPMAP_LINEAR )
+
+	self.imageTable[#self.imageTable].texture:load(_fileName)
+
+
+	local xtex, ytex = self.imageTable[#self.imageTable].texture:getSize()
+
+	self.imageTable[#self.imageTable].image = MOAIGfxQuad2D.new( )
+	self.imageTable[#self.imageTable].image:setTexture( self.imageTable[#self.imageTable].texture )
+	self.imageTable[#self.imageTable].image:setRect(0, 0, xtex, ytex)
+
+
 	print("New image created in self.ImageTable with id: "..temp.id.."")
 	print("Table now contains: "..#self.imageTable.." images")
 end
 
-function core:draw(_image, _x, _y)
-	if self.imageTable[_image] ~= nil then
-		self.imageTable[_image].prop:setLoc(_x,_y)
-		print("Image: ".._image.." is being drawn at x: ".._x.." y: ".._y.."")
-	else
-		print("No image mate... Check again. Image Index in table is: ".._image.."")
+function image:renderImage(_image, _x, _y)
+	
+	local imageToRender = nil 
+	local imageID = image:returnImageId(_image)
+
+	if imageID > 0 then
+
+		self.imageTable[imageID].prop = MOAIProp2D.new()
+		self.imageTable[imageID].prop:setDeck(self.imageTable[imageID].image)
+
+		core:returnLayerTable( )[self.imageTable[imageID].layer].layer:insertProp( self.imageTable[imageID].prop )	
+		self.imageTable[imageID].prop:setLoc(_x, _y)
 	end
+	
 end
 
-function core:removeImage(_image)
-	self.layerTable[ self.imageTable[_image].layer ].layer:removeProp(self.imageTable[_image].prop)
-	table.remove(self.imageTable,_image)
-	print("Image id: ".._image.." removed from self.imageTable. Table now contains "..#self.imageTable.." images")
+function image:returnImageId(_imageName)
+	for i,v in ipairs(self.imageTable) do
+		if v.name == _imageName then
+			return i
+		end
+	end	
+	return 0
+end
+
+function image:dropImage(_image)
+	local imageID = image:returnImageId(_image)
+	if imageID > 0 then
+		print("REMOVING PROP: "..imageID.."")
+		core:returnLayerTable( )[1].layer:removeProp( self.imageTable[imageID].prop )		
+	end
 end

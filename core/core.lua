@@ -2,8 +2,13 @@ core = {}
 
 function core:init( )
 	self.viewPortTable = {}
+
 	self.layerTable = {}
 	self.imageTable = {}
+end
+
+function core:returnLayerTable( )
+	return self.layerTable
 end
 
 function core:seWindow(_screenWidth, _screenHeight)
@@ -37,10 +42,11 @@ function core:setViewPort(_viewPort, _viewPortWidth, _viewPortHeight, _scaleRati
 end
 
 
-function core:setLayer(_layerName, _parrentViewPort)
+function core:newLayer(_layerName, _parrentViewPort)
 	local temp = {
 		id = #self.layerTable + 1,
-		layer = _layerName,
+		name = _LayerName,
+		layer = nil,
 		viewPortParrent = _parrentViewPort,
 	}	
 	table.insert(self.layerTable, temp)
@@ -50,4 +56,8 @@ end
 
 function core:_debugRenderLayer( _id )
 	MOAIRenderMgr.pushRenderPass(self.layerTable[_id].layer)
+end
+
+function core:render(_id)
+	MOAIRenderMgr.setRenderTable(self.layerTable)
 end

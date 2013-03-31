@@ -1,26 +1,48 @@
+resX = 1024
+resY = 480
+
 require "core.core"
 require "core.image"
 require "Game.game"
 require "Game.map"
+require "core.StateMachine"
+require "core.input"
+require "core.renderer"
 
 
 core:init( )
-core:seWindow(640, 480)
-
---[[ Used for Top-Left corner, normal stuff.
-	viewport:setSize ( 480, 320 )
-	viewport:setScale ( 480, -320 ) -- use negative Y axis
-	viewport:setScale ( -1, 1 ) -- offset projection origin by -1, 1 in OpenGL projection space
-]]
-core:setViewPort(ViewPort1, 640, 480, 1)
-core:setLayer(Layer1, 1)
-
+core:seWindow(resX, resY)
+core:setViewPort(ViewPort1, resX, resY, 1)
+core:newLayer(Layer1, 1)
 
 core:_debugRenderLayer(1)
-core:newImage("media/pimp.png",1)
-core:removeImage(1)
-core:newImage("media/pimp.png",1)
-core:draw(1,0,0)
+
+
+
+
+
+mainThread = MOAICoroutine.new()
+
+image:init( )
+--Game:init( )
+
+image:newTexture("media/pimp.png",1,"PIMP")
+image:newTexture("media/water.png",1,"WATER_TEX")
+image:renderImage("PIMP",-100,0)
+image:renderImage("WATER_TEX",32,32)
+image:renderImage("WATER_TEX",32,64)
+image:renderImage("PIMP",200,32)
+--image:dropImage("PIMP")
+image:renderImage("PIMP",200,100)
+
+
+function GameLoop( )
+	Game:update( )
+end
+
+mainThread:run(GameLoop)
+
+
 
 
 
