@@ -27,15 +27,23 @@
 			"file": "main.lua",
 			"settings":
 			{
-				"buffer_size": 300,
+				"buffer_size": 635,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "core/image.lua",
+			"file": "extended/animations.lua",
 			"settings":
 			{
-				"buffer_size": 1566,
+				"buffer_size": 6235,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Game/map.lua",
+			"settings":
+			{
+				"buffer_size": 760,
 				"line_ending": "Windows"
 			}
 		},
@@ -43,31 +51,7 @@
 			"file": "core/core.lua",
 			"settings":
 			{
-				"buffer_size": 1889,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "core/StateMachine.lua",
-			"settings":
-			{
-				"buffer_size": 463,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "core/input.lua",
-			"settings":
-			{
-				"buffer_size": 442,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Game/map.lua",
-			"settings":
-			{
-				"buffer_size": 573,
+				"buffer_size": 2045,
 				"line_ending": "Windows"
 			}
 		},
@@ -75,7 +59,23 @@
 			"file": "Game/game.lua",
 			"settings":
 			{
-				"buffer_size": 1130,
+				"buffer_size": 955,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "core/input.lua",
+			"settings":
+			{
+				"buffer_size": 773,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "core/image.lua",
+			"settings":
+			{
+				"buffer_size": 2590,
 				"line_ending": "Windows"
 			}
 		}
@@ -104,23 +104,29 @@
 	},
 	"file_history":
 	[
+		"/E/MoaiSDK/projects/non-linear-td-engine/core/renderer.lua",
+		"/E/MoaiSDK/projects/non-linear-td-engine/core/image.lua",
+		"/E/MoaiSDK/projects/lovemoai-master/moai_love2d_wrapper.lua",
+		"/E/MoaiSDK/projects/lovemoai-master/main.lua",
+		"/E/MoaiSDK/projects/non-linear-td-engine/unitTest/main.lua",
+		"/E/MoaiSDK/projects/non-linear-td-engine/Game/game.lua",
+		"/E/MoaiSDK/projects/non-linear-td-engine/core/core.lua",
+		"/C/Users/bacio_000/AppData/Local/Temp/Rar$DIa0.411/main.lua",
+		"/C/Users/bacio_000/AppData/Local/Temp/Rar$DIa0.236/config.lua",
+		"/E/MoaiSDK/samples/input/input-callbacks/main.lua",
+		"/E/MoaiSDK/projects/non-linear-td-engine/core/input.lua",
+		"/E/MoaiSDK/projects/non-linear-td-engine/Game/map.lua",
+		"/E/MoaiSDK/projects/non-linear-td-engine/core/StateMachine.lua",
 		"/E/MoaiSDK/projects/flower/flower-library/src/flower.lua",
 		"/E/MoaiSDK/projects/flower/flower-library/readme.md",
-		"/E/MoaiSDK/projects/non-linear-td-engine/core/image.lua",
-		"/E/MoaiSDK/projects/non-linear-td-engine/core/core.lua",
 		"/E/MoaiSDK/projects/flower/flower-samples/src/main.lua",
 		"/E/MoaiSDK/projects/Moai-Examples-master/game template/game.lua",
 		"/E/MoaiSDK/projects/Moai-Examples-master/CoffeeDemo/main.lua",
 		"/E/MoaiSDK/projects/non-linear-td-engine/main.lua",
-		"/E/MoaiSDK/projects/non-linear-td-engine/core/StateMachine.lua",
-		"/E/MoaiSDK/projects/non-linear-td-engine/Game/game.lua",
-		"/E/MoaiSDK/projects/non-linear-td-engine/Game/map.lua",
 		"/E/MoaiSDK/projects/Moai-Examples-master/tiny wings/main.lua",
 		"/E/MoaiSDK/projects/Moai-Examples-master/tiny wings/init.lua",
 		"/E/MoaiSDK/projects/Moai-Examples-master/game template/main.lua",
 		"/E/MoaiSDK/projects/Moai-Examples-master/game template/init.lua",
-		"/E/MoaiSDK/projects/lovemoai-master/main.lua",
-		"/E/MoaiSDK/projects/lovemoai-master/moai_love2d_wrapper.lua",
 		"/E/MoaiSDK/projects/lovemoai-master/love2d_pclouds/main.lua",
 		"/E/MoaiSDK/projects/Shilke2D-master/Shilke2D/Display/Image.lua",
 		"/E/MoaiSDK/projects/Shilke2D-master/Samples/anim.lua",
@@ -212,7 +218,7 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -220,15 +226,15 @@
 					"file": "main.lua",
 					"settings":
 					{
-						"buffer_size": 300,
+						"buffer_size": 635,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								151,
-								151
+								205,
+								205
 							]
 						],
 						"settings":
@@ -243,18 +249,18 @@
 				},
 				{
 					"buffer": 1,
-					"file": "core/image.lua",
+					"file": "extended/animations.lua",
 					"settings":
 					{
-						"buffer_size": 1566,
+						"buffer_size": 6235,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								867,
-								867
+								188,
+								188
 							]
 						],
 						"settings":
@@ -263,25 +269,25 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 315.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "core/core.lua",
+					"file": "Game/map.lua",
 					"settings":
 					{
-						"buffer_size": 1889,
+						"buffer_size": 760,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								230,
+								230
 							]
 						],
 						"settings":
@@ -290,25 +296,25 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 180.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "core/StateMachine.lua",
+					"file": "core/core.lua",
 					"settings":
 					{
-						"buffer_size": 463,
+						"buffer_size": 2045,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								280,
-								280
+								58,
+								58
 							]
 						],
 						"settings":
@@ -324,18 +330,18 @@
 				},
 				{
 					"buffer": 4,
-					"file": "core/input.lua",
+					"file": "Game/game.lua",
 					"settings":
 					{
-						"buffer_size": 442,
+						"buffer_size": 955,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								292,
-								292
+								496,
+								496
 							]
 						],
 						"settings":
@@ -350,18 +356,18 @@
 				},
 				{
 					"buffer": 5,
-					"file": "Game/map.lua",
+					"file": "core/input.lua",
 					"settings":
 					{
-						"buffer_size": 573,
+						"buffer_size": 773,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								551,
-								551
+								209,
+								209
 							]
 						],
 						"settings":
@@ -370,30 +376,31 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 45.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 6,
-					"file": "Game/game.lua",
+					"file": "core/image.lua",
 					"settings":
 					{
-						"buffer_size": 1130,
+						"buffer_size": 2590,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								156,
-								156
+								296,
+								296
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Lua/Lua.tmLanguage"
+							"syntax": "Packages/Lua/Lua.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,

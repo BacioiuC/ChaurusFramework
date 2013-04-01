@@ -39,6 +39,8 @@ function image:newTexture(_fileName, _parrentLayer, _name)
 
 	print("New image created in self.ImageTable with id: "..temp.id.."")
 	print("Table now contains: "..#self.imageTable.." images")
+
+	return self.imageTable[#self.imageTable].image, name
 end
 
 function image:renderImage(_image, _x, _y)
@@ -95,4 +97,17 @@ end
 
 function image:returnNumberOfProps( )
 	return #self.propTable
+end
+
+function image:textureGetSize(_image)
+	local imageID = image:returnImageId(_image)
+
+	if imageID > 0 then
+		local texW, texH = self.imageTable[imageID].texture:getSize( )
+		return texW, texH
+	else
+		return nil, nil
+	end
+
+
 end

@@ -8,6 +8,7 @@ require "Game.map"
 require "core.StateMachine"
 require "core.input"
 require "core.renderer"
+require "extended.animations"
 
 
 core:init( )
