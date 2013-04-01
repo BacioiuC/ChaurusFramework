@@ -24,6 +24,10 @@ function Game:draw( )
 	image:renderImage("WATER_TEX",0,0)	
 end
 
+// Credits
+- Images used in the samples:
+/samples/animation - Pow Studios: http://powstudios.com/content/fire-animation-pack-1
+
 function Game:update( )
 
 end
