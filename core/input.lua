@@ -15,31 +15,63 @@ function input:isMouseDown( )
 
 end
 
-function input:onKeyboardEvent ( key, down )
+function input.onKeyboardEvent ( key, down )
 
 	if down == true then
-		print ( "keyboard: "..key.." down" )
+		Game:keypressed( key )
+	elseif down == false then
+		Game:keyreleased( key )
+	end
+	print(" "..key.."")
+
+end
+
+
+
+function input.onPointerEvent ( x, y )
+	--print ( "pointer: "..x.." "..y.."" )
+	Game.touchLocation( x, y )
+end
+
+
+
+
+function input.onMouseLeftEvent ( down )
+
+	if down == true then
+		--g:injectMouseButtonDown(inputconstants.LEFT_MOUSE_BUTTON)
+		
+		Game:touchPressed ( )
+    	
+    
 	else
-		print ( "keyboard: "..key.." up")
+		--g:injectMouseButtonUp(inputconstants.LEFT_MOUSE_BUTTON)
+		Game:touchReleased ( )
+		
 	end
 end
 
-MOAIInputMgr.device.keyboard:setCallback ( onKeyboardEvent )
-
-function input:onPointerEvent ( x, y )
-	print ( "pointer: "..x.." "..y.."" )
-end
-
-MOAIInputMgr.device.pointer:setCallback ( onPointerEvent )
 
 
-function input:onMouseLeftEvent ( down )
+function input.touchEvent( eventType, idx, x, y, tapCount )
+	if eventType == MOAITouchSensor.TOUCH_DOWN then
+		
+		input.onPointerEvent(x, y)
+		--Game.touchLocation( x, y )
 
-	if down == true then
-		print( "mouse left down" )
+		input.onMouseLeftEvent(true)
+		--Game:touchPressed ( )
 	else
-		print ( "mouse left up" )
+
 	end
 end
 
-MOAIInputMgr.device.mouseLeft:setCallback ( onMouseLeftEvent )
+if  MOAIEnvironment.osBrand == "Windows" then
+	MOAIInputMgr.device.keyboard:setCallback ( input.onKeyboardEvent )
+	MOAIInputMgr.device.pointer:setCallback ( input.onPointerEvent )
+	MOAIInputMgr.device.mouseLeft:setCallback ( input.onMouseLeftEvent )
+else
+	MOAIInputMgr.device.touch:setCallback ( input.touchEvent )
+end
+
+ --

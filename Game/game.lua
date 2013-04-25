@@ -1,40 +1,103 @@
-Game = {}
+Game = {} -- MAIN CLASS
 
--- Do all the initialisations and loadings here
--- [[ for love2D users: picture this as love.load() ]]
+
+local Grid = require ("Game.lib.jumper.grid") -- The grid class
+local Pathfinder = require ("Game.lib.jumper.pathfinder") -- The pathfinder lass
+
+
+Game.worldTimer = MOAISim.getElapsedTime( )
+Game.mouseX = 0
+Game.mouseY = 0
+
+
+Game.MainLayer = 1
+Game.GuiLayer = 2
+Game.BackgroundLayer = 3
+Game.score = 0
+Game.FakeTimer = 691
+walkable = 1
+
 function Game:init( )
-	self.gameTable = {}
+	image:init( )
 
-	image:newTexture("media/pimp.png",1,"PIMP")
-	image:newTexture("media/water.png",1,"WATER_TEX")
-
-	map:init( )
-	map:generate( )
-
+	
 end
 
--- All simulations and math stuff here
--- [[ Love2D users, this works like love.update. (Note that you can still draw in this function.. still, better not) ]]
+
 function Game:update( )
-	map:randomValues( )
+	
+	
 end
 
--- Handle the rendering here
--- [[ Love2D users, this works like love.draw()]]
+
 function Game:draw( )
-	map:draw( )
-	print("Draw Calls: "..image:returnNumberOfProps( ).."")
+
+
+end
+
+function Game:keypressed( key )
+
+end
+
+function Game:keyreleased( key )
+
+end
+
+function Game:touchPressed ( )
+
+
+
+end
+
+function Game:touchReleased ( )
+
+end
+
+function Game.touchLocation( x, y )
+	
+	Game.mouseX, Game.mouseY = core:returnLayerTable( )[1].layer:wndToWorld(x, y)
+	Game.msX, Game.msY = x, y
+	--print("TOUCHING! ALL THE TOUCHING AT: "..x.." and "..y.."")
+	
+	
+
+end
+
+function Game:ViewportScale(_ammount)
+	core:returnViewPort( )[1].viewPort:setScale(core:returnVPWidth()/_ammount, -core:returnVPHeight()/_ammount)
+end
+--MOAIInputMgr.device.pointer:setCallback(Game.touchLocation)
+
+function Game:estimateGridLocation( )
+
+end
+
+function Game:initPathfinding( )
+	grid = Grid(map.collision) 
+	
+	pather = Pathfinder(grid, 'ASTAR', walkable) 
+end
+
+function Game:updatePathfinding( )
+	grid = Grid(map.collision) 
+	
+	pather = Pathfinder(grid, 'ASTAR', walkable) 
 end
 
 function Game:loop( )
-	Game:drop( )
-
 	Game:update( )
 	Game:draw( )
 end
 
--- Everything that is rendered is dropped at this point, so rendering can begin again
--- next frame. Hack to avoid MOAI style of having a separate render loop.
 function Game:drop( )
 	image:dropProps( )
 end
+
+function onMouseLeftEvent(down)
+  if (down) then
+   
+  else
+    
+  end
+end
+--MOAIInputMgr.device.mouseLeft:setCallback(onMouseLeftEvent)
