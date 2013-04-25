@@ -22,3 +22,21 @@ Image functions:
 * image:returnImageId("STRING IDENTIFIER") `-- returns the ID of the Texture based on the String Identifier used when first creating it `
 * image:textureGetSize(myImage) `-- returns the Width and Height of the Texture.`
 
+<dl>
+<dt>Code logic:</dt>
+<dd>
+The lua file I use to write my game logic is: `game.lua`. The function that represents the `mainLoop` is Game:update(), which get's called in a MOAICouroutine in `main.lua`. Game:init() is the entry point into out game and the function that is first executed. Use it to load any assets you require (simillar to love.load(), for those with a Love2D background).
+</dd>
+
+<dt>Other functions of interest:</dt>
+<dd>
+MOAI's input's are routed through the following functions:
+* Game:keypressed(key)  
+* Game:keyreleased(key)
+* Game:touchPressed( ) -- works for both mouse and touch points
+* Game:touchReleased( ) -- works for both mouse and touch points
+* Game.touchLocation( x, y ) -- updates two sets of variables: Game.mouseX and Game.mouseY: contains the position of the cursor, or the position at which a touch event occured after they get filtered by MOAI's wndToWorld function. Game.msX, Game.msY do the same thing, but without being filtered.
+</dd>
+
+
+</dl>
