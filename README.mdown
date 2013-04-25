@@ -45,3 +45,11 @@ MOAI's input's are routed through the following functions:
 * Game:touchReleased( ) -- works for both mouse and touch points
 * Game.touchLocation( x, y ) -- updates two sets of variables: Game.mouseX and Game.mouseY: contains the position of the cursor, or the position at which a touch event occured after they get filtered by MOAI's wndToWorld function. Game.msX, Game.msY do the same thing, but without being filtered.
 
+<dl>
+<dt>Additional libraries:</dt>
+<dd>The following libraries are included with Chaurus: </dd>
+</dl>
+* Yonaba's awesome Lua Pathfinding library: [Jumper] [1]
+* My old animation library from Love2D [ found in extended/animation.lua] <-- needs re-write for chaurus.
+
+[1]: https://github.com/Yonaba/Jumper        "Yonaba's Jumper - Pathfinding Library"
