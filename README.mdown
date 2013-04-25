@@ -15,12 +15,16 @@ myImage = image:newImage(MyImageTexture, posX, posY)
 
 image:newTexture returns the id of the image file. That ID is then used to create a new prop (sprite) when called by image:newImage. In order to update an image position during the Main Loop, just call image:updateImage(myImage, posX, posY).
 
-Image functions:
+<dl>
+<dt>Image functions:</dt>
+<dd>
 * image:setVisible(myImage, bool)
 * image:setScale(myImage, scaleOnX, scaleOnY) `-- 1 is the default scale`
 * image:removeProp(myImage) `-- removes the image from the layer`
 * image:returnImageId("STRING IDENTIFIER") `-- returns the ID of the Texture based on the String Identifier used when first creating it `
 * image:textureGetSize(myImage) `-- returns the Width and Height of the Texture.`
+</dd>
+</dl>
 
 <dl>
 <dt>Code logic:</dt>
