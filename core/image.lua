@@ -68,7 +68,7 @@ function image:newTexture(_fileName, _parrentLayer, _name)
 	print("New image created in self.ImageTable with id: "..temp.id.."")
 	print("Table now contains: "..tableIndex.." images")
 
-	return temp.name, self.imageTable[tableIndex].image
+	return temp.name, self.imageTable[tableIndex].image, self.imageTable[tableIndex].texture
 end
 
 --[[
@@ -92,6 +92,7 @@ function image:newImage(_image, _x, _y)
 		local temp = {
 			id = #self.propTable + 1,
 			prop = nil,
+			texBase = nil,
 		}
 		table.insert(self.propTable, temp)
 
@@ -99,6 +100,7 @@ function image:newImage(_image, _x, _y)
 		
 		self.propTable[tableIndex].prop = MOAIProp2D.new()
 		self.propTable[tableIndex].prop:setDeck(self.imageTable[imageID].image)
+		self.propTable[tableIndex].texBase = imageID
 		core:returnLayerTable( )[self.imageTable[imageID].layer].layer:insertProp( self.propTable[tableIndex].prop )	
 		self.propTable[tableIndex].prop:setLoc(_x, _y)
 
@@ -151,6 +153,7 @@ function image:removeProp(_image)
 		local imageID = _image
 		if imageID > 0 then
 			core:returnLayerTable()[1].layer:removeProp(self.propTable[imageID].prop)
+			self.propTable[imageID].prop = nil
 		else
 			print("WOOPS, something went wrong with image REMOVAL!")
 		end
@@ -220,6 +223,23 @@ function image:getHeight(_image)
 	end
 end
 
+--[[
+	image:getSize( ) <-- used for props size. To not be confuzed with textureGetSize, getWidth of getHeight
+	which only apply to the texture deck, not the actual prop!
+	]]
+function image:getSize(_image) 
+	local imageID = _image
+	if imageID > 0 then
+		local texID = self.propTable[imageID].texBase
+
+		local szX, szY = self.imageTable[texID].texture:getSize( )
+		return szX, szY
+	else
+		print(" NOPE! IMAGE:GETSIZE() HAS A PHAIL!")
+		return nil, nil
+	end
+end
+
 function image:dropAllImages( )
 	for i,v in ipairs(self.propTable) do
 		image:removeProp(v.id)
@@ -228,18 +248,56 @@ function image:dropAllImages( )
 	self.propTable = {}
 end
 
-function image:newText( )
-
-	textbox = MOAITextBox.new ()
-	textbox:setString ( "Score: 0" )
-	textbox:setFont ( font )
-	textbox:setTextSize ( 16 )
-	textbox:setRect ( 0, 0, 750, 430 )
-	--textbox:setYFlip ( true )
-	--layer:insertProp ( textbox )
-	 core:returnLayer(1):insertProp(textbox)
+function image:setPriority(_image, _priority)
+	imageID = _image
+	if imageID > 0 then
+		self.propTable[imageID].prop:setPriority( _priority )
+	else
+		print("CANNOT SET PRIORITY FOR IMAGE")
+	end
 end
 
-function image:renderText(_string)
-	textbox:setString(_string)
+function image:setColor(_image,r,g,b,alpha)
+	imageID = _image
+	if imageID > 0 then
+		self.propTable[imageID].prop:setColor(r,g,b,alpha)
+
+	else
+		print("CANNOT SET COLOR FOR IMAGE: "..imageID.."")
+	
+	end
+end
+
+function image:setTexture(_image, _texture)
+	imageID = _image
+	if imageID > 0 then
+		self.propTable[imageID].prop:setTexture(_texture)
+
+	else
+		print("CANNOT SET COLOR FOR IMAGE: "..imageID.."")
+	
+	end
+end
+
+function image:propExists( _image )
+	local imageID = _image
+
+	if self.propTable[imageID].prop ~= nil then
+
+		return true
+	else
+		return false
+	end
+end
+
+function image:moveProp( _image, _x, _y )
+	local imageID = _image
+	local imageProp = self.propTable[imageID].prop
+	if imageProp ~= nil then
+		imageProp:seekLoc(_x, _y)
+		--return true
+	else
+		print("CANNOT SEEK LOC WITH IMAGE:moveProp")
+		--return false
+	end
 end

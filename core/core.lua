@@ -6,7 +6,7 @@ function core:init( )
 	self.layerTable = {}
 	self.imageTable = {}
 
-
+	
 end
 
 function core:returnLayerTable( )
@@ -21,7 +21,8 @@ function core:seWindow(_screenWidth, _screenHeight)
 	if screenHeight == nil then screenHeight = _screenHeight end
 
 	MOAISim.openWindow(app_name,screenWidth,screenHeight)
-
+	--font = MOAIFont.new ()
+	--font:loadFromTTF ( "tahomabd.ttf")
 end
 
 function core:setViewPort(_viewPort, _viewPortWidth, _viewPortHeight, _scaleRatio)
@@ -37,8 +38,8 @@ function core:setViewPort(_viewPort, _viewPortWidth, _viewPortHeight, _scaleRati
 	}
 	table.insert(self.viewPortTable, temp)
 
-	unitsX = 800
-	unitsY = 800
+	unitsX = _viewPortWidth--/2--512
+	unitsY = _viewPortHeight--/2--512
 
 	self.viewPortTable[#self.viewPortTable].viewPort = MOAIViewport.new()
 	self.viewPortTable[#self.viewPortTable].viewPort:setSize(self.viewPortTable[#self.viewPortTable].width,self.viewPortTable[#self.viewPortTable].height)
@@ -48,6 +49,10 @@ function core:setViewPort(_viewPort, _viewPortWidth, _viewPortHeight, _scaleRati
 	
 	self.viewPortTable[#self.viewPortTable].viewPort:setScale(unitsX,-unitsY)
 	self.viewPortTable[#self.viewPortTable].viewPort:setOffset(-1,1)
+end
+
+function core:offsetViewport(_x, _y)
+	core:returnViewPort()[1].viewPort:setOffset(_x, _y)
 end
 
 function core:returnViewPort( )
