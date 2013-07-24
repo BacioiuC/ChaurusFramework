@@ -38,8 +38,8 @@ function core:setViewPort(_viewPort, _viewPortWidth, _viewPortHeight, _scaleRati
 	}
 	table.insert(self.viewPortTable, temp)
 
-	unitsX = _viewPortWidth--/2--512
-	unitsY = _viewPortHeight--/2--512
+	unitsX = _viewPortWidth*4--512
+	unitsY = _viewPortHeight*4--512
 
 	self.viewPortTable[#self.viewPortTable].viewPort = MOAIViewport.new()
 	self.viewPortTable[#self.viewPortTable].viewPort:setSize(self.viewPortTable[#self.viewPortTable].width,self.viewPortTable[#self.viewPortTable].height)
@@ -91,4 +91,12 @@ end
 
 function core:render(_id)
 	MOAIRenderMgr.setRenderTable(self.layerTable[_id].layer)
+end
+
+function core:setFullscreen(_bool)
+	if _bool == true then
+		MOAISim.enterFullscreenMode ()
+	elseif _bool == false then
+		MOAISim.exitFullscreenMode ()
+	end
 end

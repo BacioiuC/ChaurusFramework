@@ -6,53 +6,57 @@ camera.scaleY = 1
 camera.rotation = 0
 camera.sensitivity = 8
 
-function camera:set()
-  love.graphics.push()
-  love.graphics.rotate(-self.rotation)
-  love.graphics.scale(1 / self.scaleX, 1 / self.scaleY)
-  love.graphics.translate(-self.x/4, -self.y/4)
+Game.mouseX = 0
+Game.mouseY = 0
+
+Game.pressedX = Game.mouseX
+Game.pressedY = Game.mouseY
+
+function camera:init( )
+  -- load Joystick pos
+  joyStick_base_tex = image:newTexture("Game/media/touchPressed_base.png",1,"JOySTICK_BASE")
+  joyStick_top_tex = image:newTexture("Game/media/touchPressed_joystick.png",1,"JOYSTICK_TOP")
+
+  joyStick_base = image:newImage(joyStick_base_tex, Game.mouseX,Game.mouseY)
+  joyStick_top = image:newImage(joyStick_top_tex, Game.mouseX,Game.mouseY)
+
+  image:setVisible(joyStick_base, false)
+  image:setVisible(joyStick_top, false)
+
 end
 
-function camera:unset()
-  love.graphics.pop()
-end
+function camera:update( )
+  if MouseDown == true then
+    local difMouseX = (Game.pressedX - Game.mouseX)/25
+    local difMouseY = (Game.pressedY - Game.mouseY)/25
+   
+    image:updateImage(joyStick_base, Game.pressedX, Game.pressedY)
+    image:updateImage(joyStick_top, Game.mouseX, Game.mouseY)
+    if Game.currentState == 5 then
+      map:updateScreen(difMouseX,difMouseY)
+    elseif Game.currentState == 3 then
+      isoMap:updateScreen(difMouseX,difMouseY)
+    end
 
-function camera:move(dx, dy)
-  self.x = self.x + (dx or 0)
-  self.y = self.y + (dy or 0)
-end
-
-function camera:rotate(dr)
-  self.rotation = self.rotation + dr
-end
-
-function camera:scale(sx, sy)
-  sx = sx or 1
-  self.scaleX = self.scaleX * sx
-  self.scaleY = self.scaleY * (sy or sx)
-end
-
-function camera:setPosition(x, y)
-  self.x = x or self.x
-  self.y = y or self.y
-end
-
-function camera:setScale(sx, sy)
-  self.scaleX = sx or self.scaleX
-  self.scaleY = sy or self.scaleY
-end
-
-function camera:setToMouse( )
-  if mouse:returnTapState() == true then
-    local newMouseX, newMouseY = mouse:returnCalibration( )
-    camera:move( (newMouseX - love.mouse.getX()) / camera.sensitivity , (newMouseY - love.mouse.getY()) / camera.sensitivity )
   end
 end
 
-function camera:returnScale( )
-  return self.scaleX, self.scaleY
+function camera:setJoystickVisible( )
+  if Game.currentState == 5 or Game.currentState == 3 then
+    image:setVisible(joyStick_base, true)
+    image:setVisible(joyStick_top, true)
+    Game.pressedX = Game.mouseX
+    Game.pressedY = Game.mouseY
+  --mouseClicked = true
+  end
 end
 
-function camera:returnPosition( )
-  return self.x, self.y
+function camera:setJoystickHidden( )
+  if Game.currentState == 5 or Game.currentState == 3 then
+    image:setVisible(joyStick_base, false)
+    image:setVisible(joyStick_top, false)
+    Game.pressedX = Game.mouseX
+    Game.pressedY = Game.mouseY
+   -- mouseClicked = false
+  end
 end

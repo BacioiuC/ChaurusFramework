@@ -22,7 +22,7 @@ function input.onKeyboardEvent ( key, down )
 	elseif down == false then
 		Game:keyreleased( key )
 	end
-	print(" "..key.."")
+	--print(" "..key.."")
 
 end
 

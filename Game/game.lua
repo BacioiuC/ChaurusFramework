@@ -1,30 +1,53 @@
 Game = {} -- MAIN CLASS
 
+-------------------------------------------
+--------- GAME FILES ----------------------
+--------------------------------------------
+require "Game.file_io"
+require "Game.camera"
 
-local Grid = require ("Game.lib.jumper.grid") -- The grid class
-local Pathfinder = require ("Game.lib.jumper.pathfinder") -- The pathfinder lass
+--------------------------------------
+---- PATHFINDER INCLUDES -------------
+---------------------------------------
+
+local Grid = require "Game.lib.jumper.grid" -- The grid class
+local Pathfinder = require "Game.lib.jumper.pathfinder" -- The pathfinder lass
 
 
-Game.worldTimer = MOAISim.getElapsedTime( )
-Game.mouseX = 0
-Game.mouseY = 0
+require "gui/support/class"
 
 
-Game.MainLayer = 1
-Game.GuiLayer = 2
-Game.BackgroundLayer = 3
-Game.score = 0
-Game.FakeTimer = 691
-walkable = 1
+
+g = gui.GUI(resX, resY)
+
+function Game:initGui( )
+	
+	g:addToResourcePath(filesystem.pathJoin("resources", "fonts"))
+	g:addToResourcePath(filesystem.pathJoin("resources", "gui"))
+	g:addToResourcePath(filesystem.pathJoin("resources", "media"))
+	g:addToResourcePath(filesystem.pathJoin("resources", "themes"))
+	g:addToResourcePath(filesystem.pathJoin("resources", "layouts"))
+
+	layermgr.addLayer("gui", 99999, g:layer())
+	g:setTheme("basetheme.lua")
+	g:setCurrTextStyle("default")
+	
+end
 
 function Game:init( )
-	image:init( )
 
-	
+
+	Game:initGui( )
+	image:init()
+
+
 end
 
 
 function Game:update( )
+
+	Game.worldTimer = MOAISim.getElapsedTime( )
+	
 	
 	
 end
@@ -32,6 +55,11 @@ end
 
 function Game:draw( )
 
+
+
+end
+
+function Game:touchRight( )
 
 end
 
@@ -45,8 +73,15 @@ end
 
 function Game:touchPressed ( )
 
+end
 
-
+function Game:dropUI(_gui, _resources)
+	if (nil ~= _gui) then
+		if (nil ~= widgets) then
+        	unregisterScreenWidgets(widgets)
+       	end
+        _gui:layer():clear()
+	end
 end
 
 function Game:touchReleased ( )
@@ -59,7 +94,7 @@ function Game.touchLocation( x, y )
 	Game.msX, Game.msY = x, y
 	--print("TOUCHING! ALL THE TOUCHING AT: "..x.." and "..y.."")
 	
-	
+	g:injectMouseMove(x, y)
 
 end
 
@@ -68,20 +103,17 @@ function Game:ViewportScale(_ammount)
 end
 --MOAIInputMgr.device.pointer:setCallback(Game.touchLocation)
 
-function Game:estimateGridLocation( )
-
-end
 
 function Game:initPathfinding( )
-	grid = Grid(map.collision) 
+	--grid = Grid(map.collision) 
 	
-	pather = Pathfinder(grid, 'ASTAR', walkable) 
+	--pather = Pathfinder(grid, 'ASTAR', walkable) 
 end
 
 function Game:updatePathfinding( )
-	grid = Grid(map.collision) 
+	--grid = Grid(map.collision) 
 	
-	pather = Pathfinder(grid, 'ASTAR', walkable) 
+	--pather = Pathfinder(grid, 'ASTAR', walkable) 
 end
 
 function Game:loop( )
@@ -90,14 +122,13 @@ function Game:loop( )
 end
 
 function Game:drop( )
-	image:dropProps( )
+	
 end
 
 function onMouseLeftEvent(down)
   if (down) then
-   
+    g:injectMouseButtonDown(inputconstants.LEFT_MOUSE_BUTTON)
   else
-    
+    g:injectMouseButtonUp(inputconstants.LEFT_MOUSE_BUTTON)
   end
 end
---MOAIInputMgr.device.mouseLeft:setCallback(onMouseLeftEvent)

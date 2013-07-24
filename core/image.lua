@@ -30,7 +30,7 @@ end
 
 	Returns: @Param 1: Name of the texture, @Param 2: pointer to the main quad.
 --]]
-function image:newTexture(_fileName, _parrentLayer, _name)
+function image:newTexture(_fileName, _parrentLayer, _name, _isDeck, _tileSize)
 
 	local temp = {
 		id = #self.imageTable + 1,
@@ -40,6 +40,7 @@ function image:newTexture(_fileName, _parrentLayer, _name)
 		layer = _parrentLayer,
 		name = _name,
 		texture = nil,
+		isDeck = false,
 	}
 	table.insert(self.imageTable, temp)
 
@@ -53,23 +54,84 @@ function image:newTexture(_fileName, _parrentLayer, _name)
 		print("TEXTURE ARRAY = NO NO")
 	end
 	--self.imageTable[tableIndex].texture:setFilter ( MOAITexture.GL_LINEAR_MIPMAP_LINEAR )
-
 	self.imageTable[tableIndex].texture:load(_fileName)
-
-
 	local xtex, ytex = self.imageTable[tableIndex].texture:getSize()
+	if _isDeck == nil or _isDeck == false then
+		
 
-	self.imageTable[tableIndex].image = MOAIGfxQuad2D.new( )
-	self.imageTable[tableIndex].image:setTexture( self.imageTable[tableIndex].texture )
-	self.imageTable[tableIndex].image:setRect(0, 0, xtex, ytex)
-	self.imageTable[tableIndex].image:setUVRect( 0, 0, 1, 1 )
+		self.imageTable[tableIndex].image = MOAIGfxQuad2D.new( )
+		self.imageTable[tableIndex].image:setTexture( self.imageTable[tableIndex].texture )
+		self.imageTable[tableIndex].image:setRect(0, 0, xtex, ytex)
+		self.imageTable[tableIndex].image:setUVRect( 0, 0, 1, 1 )
 
+
+
+
+		
+	else -- then we are dealing with a deck
+		self.imageTable[tableIndex].isDeck = true
+		self.imageTable[tableIndex].image = MOAITileDeck2D.new ()
+
+		self.imageTable[tableIndex].image:setTexture ( self.imageTable[tableIndex].texture )
+
+
+		self.imageTable[tableIndex].image:setSize ( xtex/_tileSize, ytex/_tileSize )
+		--self.imageTable[tableIndex].image:setRect ( 0, _tileSize, _tileSize, 0)
+		--self.imageTable[tableIndex].image:setShape( MOAIGridSpace.OBLIQUE_SHAPE)
+		--self.imageTable[tableIndex].image:setRect(-xtex/_tileSize, -ytex/_tileSize, xtex/_tileSize, ytex/_tileSize)
+		--self.imageTable[tableIndex].image:setUVRect( 0, 0, _tileSize, _tileSize )		
+	end
 
 	print("New image created in self.ImageTable with id: "..temp.id.."")
 	print("Table now contains: "..tableIndex.." images")
-
 	return temp.name, self.imageTable[tableIndex].image, self.imageTable[tableIndex].texture
 end
+
+function image:newDeckTexture(_fileName, _parrentLayer, _name, _tileSize)
+
+	local temp = {
+		id = #self.imageTable + 1,
+		pathToImage = _fileName,
+		image = nil,
+		prop = nil,
+		layer = _parrentLayer,
+		name = _name,
+		texture = nil,
+		isDeck = false,
+	}
+	table.insert(self.imageTable, temp)
+
+	local tableIndex = #self.imageTable
+	
+	self.imageTable[tableIndex].texture = MOAITexture.new ()
+
+	if self.imageTable[tableIndex].texture ~= nil then
+		print("TEXTURE ARRAY = OK")
+	else
+		print("TEXTURE ARRAY = NO NO")
+	end
+	--self.imageTable[tableIndex].texture:setFilter ( MOAITexture.GL_LINEAR_MIPMAP_LINEAR )
+	self.imageTable[tableIndex].texture:load(_fileName)
+	local xtex, ytex = self.imageTable[tableIndex].texture:getSize()
+
+	self.imageTable[tableIndex].isDeck = true
+	self.imageTable[tableIndex].image = MOAITileDeck2D.new ()
+
+	self.imageTable[tableIndex].image:setTexture ( self.imageTable[tableIndex].texture )
+
+
+	self.imageTable[tableIndex].image:setSize ( xtex/_tileSize, ytex/_tileSize )
+	--self.imageTable[tableIndex].image:setRect ( 0, _tileSize, _tileSize, 0)
+		--self.imageTable[tableIndex].image:setShape( MOAIGridSpace.OBLIQUE_SHAPE)
+		--self.imageTable[tableIndex].image:setRect(-xtex/_tileSize, -ytex/_tileSize, xtex/_tileSize, ytex/_tileSize)
+		--self.imageTable[tableIndex].image:setUVRect( 0, 0, _tileSize, _tileSize )		
+	
+
+	print("New image created in self.ImageTable with id: "..temp.id.."")
+	print("Table now contains: "..tableIndex.." images")
+	return temp.name, self.imageTable[tableIndex].image, self.imageTable[tableIndex].texture
+end
+
 
 --[[
 	image:newImage:
@@ -81,6 +143,38 @@ end
 	inserts it into layer 1. [L1 only for now]
 	Returns: @Param 1: the position of the new prop(sprite) inside our PROP Table
 --]]
+function image:newDeckImage(_image, _x, _y, _deckTile)
+	
+	local imageToRender = nil 
+	local imageID = image:returnImageId(_image)
+
+
+
+	if imageID > 0 then
+		local temp = {
+			id = #self.propTable + 1,
+			prop = nil,
+			texBase = nil,
+		}
+		table.insert(self.propTable, temp)
+
+		local tableIndex = #self.propTable
+		
+		self.propTable[tableIndex].prop = MOAIProp2D.new()
+		self.propTable[tableIndex].prop:setDeck(self.imageTable[imageID].image)
+		self.propTable[tableIndex].texBase = imageID
+		core:returnLayerTable( )[self.imageTable[imageID].layer].layer:insertProp( self.propTable[tableIndex].prop )
+		self.propTable[tableIndex].prop:setIndex(_deckTile)	
+		self.propTable[tableIndex].prop:setLoc(_x, _y)
+
+		return temp.id
+	else
+		print("Cannot draw image, Name: ")
+		return 0
+	end
+
+end
+
 function image:newImage(_image, _x, _y)
 	
 	local imageToRender = nil 
@@ -299,5 +393,15 @@ function image:moveProp( _image, _x, _y )
 	else
 		print("CANNOT SEEK LOC WITH IMAGE:moveProp")
 		--return false
+	end
+end
+
+function image:setGrid(_image, _grid)
+	local imageID = _image
+	local imageProp = self.propTable[imageID].prop
+	if imageProp ~= nil then
+		imageProp:setGrid(_grid)
+	else
+		print("CANNOT SET GRID")
 	end
 end
