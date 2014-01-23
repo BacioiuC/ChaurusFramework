@@ -6,7 +6,8 @@ function core:init( )
 	self.layerTable = {}
 	self.imageTable = {}
 
-	
+	self._vpW = 1
+	self._vpH = 1
 end
 
 function core:returnLayerTable( )
@@ -21,11 +22,52 @@ function core:seWindow(_screenWidth, _screenHeight)
 	if screenHeight == nil then screenHeight = _screenHeight end
 
 	MOAISim.openWindow(app_name,screenWidth,screenHeight)
-	--font = MOAIFont.new ()
-	--font:loadFromTTF ( "tahomabd.ttf")
+	--self:setFullscreen(true)
+	--core:initFont( )
 end
 
-function core:setViewPort(_viewPort, _viewPortWidth, _viewPortHeight, _scaleRatio)
+function core:initFont( )
+	font = MOAIFont.new ()
+	charcodes = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,:;!?()&/-'
+
+	bitmapFontReader = MOAIBitmapFontReader.new ()
+	bitmapFontReader:loadPage ( "Game/media/FontVerdana18.png", charcodes, 16 )
+	font:setReader ( bitmapFontReader )
+	glyphCache = MOAIGlyphCache.new ()
+	glyphCache:setColorFormat ( MOAIImage.COLOR_FMT_RGBA_8888 )
+	font:setCache ( glyphCache )
+
+	self._boxTable = {}
+end
+
+function core:newTextbox(_x, _y, _width, _height, _string)
+--[[	local temp = {
+		id = #self._boxTable+1,
+		box = MOAITextBox.new( ),
+	}
+	temp.box:setString(_string)
+	temp.box:setFont(font)
+	temp.box:setTextSize(12)
+	temp.box:setRect(_x, _y, _x + _width, _y + _height)
+	temp.box:setAlignment ( MOAITextBox.CENTER_JUSTIFY, MOAITextBox.CENTER_JUSTIFY )
+	table.insert(self._boxTable, temp)
+	
+	self.layerTable[#self.layerTable].layer:insertProp( temp.box )--]]
+
+
+	--[[textbox = MOAITextBox.new ()
+	textbox:setString ( text )
+	textbox:setFont ( font )
+	textbox:setTextSize ( 16 )
+	textbox:setRect ( -150, -230, 150, 230 )
+	textbox:setAlignment ( MOAITextBox.CENTER_JUSTIFY, MOAITextBox.CENTER_JUSTIFY )
+	textbox:setYFlip ( true )--]]
+	
+
+
+end
+
+function core:setViewPort(_layer, _viewPort, _viewPortWidth, _viewPortHeight, _vp2, _vp3, _scaleRatio)
 	viewportWidth, viewportHeight = MOAIGfxDevice.getViewSize()
 	local temp = {
 		id = #self.viewPortTable + 1,
@@ -38,17 +80,26 @@ function core:setViewPort(_viewPort, _viewPortWidth, _viewPortHeight, _scaleRati
 	}
 	table.insert(self.viewPortTable, temp)
 
-	unitsX = _viewPortWidth*4--512
-	unitsY = _viewPortHeight*4--512
+	unitsX = units_x
+
+	unitsY = units_y
 
 	self.viewPortTable[#self.viewPortTable].viewPort = MOAIViewport.new()
-	self.viewPortTable[#self.viewPortTable].viewPort:setSize(self.viewPortTable[#self.viewPortTable].width,self.viewPortTable[#self.viewPortTable].height)
-	--self.viewPortTable[#self.viewPortTable].viewPort:setScale(self.viewPortTable[#self.viewPortTable].width, -self.viewPortTable[#self.viewPortTable].height )
-	--self.viewPortTable[#self.viewPortTable].viewPort:setScale(1, 1)
-	-- Scaling set to 1x1 units
-	
+	self.viewPortTable[#self.viewPortTable].viewPort:setSize(_viewPortWidth, _viewPortHeight, _vp2, _vp3)
 	self.viewPortTable[#self.viewPortTable].viewPort:setScale(unitsX,-unitsY)
 	self.viewPortTable[#self.viewPortTable].viewPort:setOffset(-1,1)
+	self._vpW = unitsX--self.viewPortTable[#self.viewPortTable].width
+	self._vpH = unitsY--self.viewPortTable[#self.viewPortTable].height
+end
+
+
+function core:updateViewPort(_vpWidth, _vpHeight, _vp2, _vp3)
+	for i,v in ipairs(self.viewPortTable) do
+		v.viewPort:setSize(_vpWidth, _vpHeight, _vp2, _vp3)
+		v.viewPort:setScale(unitsX,-unitsY)
+		print("WIDTH: ".._vpWidth.." HEIGHT: ".._vpHeight.." VP2: ".._vp2.." VP3: ".._vp3.."")
+		print(i)
+	end
 end
 
 function core:offsetViewport(_x, _y)
@@ -60,11 +111,11 @@ function core:returnViewPort( )
 end
 
 function core:returnVPWidth() 
-	return self.viewPortTable[1].width
+	return self._vpW--self.viewPortTable[1].width
 end
 
 function core:returnVPHeight( )
-	return self.viewPortTable[1].height
+	return self._vpH--self.viewPortTable[1].height
 end
 
 
@@ -77,12 +128,38 @@ function core:newLayer(_layerName, _parrentViewPort)
 	}	
 	table.insert(self.layerTable, temp)
 	self.layerTable[#self.layerTable].layer = MOAILayer2D.new()
-	self.layerTable[#self.layerTable].layer:setViewport( self.viewPortTable[ self.layerTable[#self.layerTable].viewPortParrent ].viewPort )
+	self.layerTable[#self.layerTable].layer:setViewport( self.viewPortTable[ _parrentViewPort ].viewPort )
 
+
+end
+
+function core:layerSetPartition(_layer, _partition)
+	self.layerTable[_layer].layer:setPartition ( _partition )
 end
 
 function core:returnLayer(_id)
 	return self.layerTable[_id].layer
+end
+
+function core:_debugSetCamera( )
+	--print("DIS")
+	--print("DIS")
+	--print("DIS")
+	--print("DIS")
+	--print("DIS")
+
+	dcamera = MOAICamera.new ()
+	dcamera:setOrtho ( true )
+	dcamera:setNearPlane ( 10000 )
+	dcamera:setFarPlane ( -10000 )
+	dcamera:setRot (0, 0, 0)
+	core:returnLayer(1):setCamera ( dcamera )
+	core:returnLayer(2):setCamera ( dcamera )
+	core:returnLayer(3):setCamera ( dcamera )
+	core:returnLayer(4):setCamera ( dcamera )
+	core:returnLayer(5):setCamera ( dcamera )
+
+
 end
 
 function core:_debugRenderLayer( _id )

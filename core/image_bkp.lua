@@ -17,9 +17,6 @@ image = {}
 function image:init( )
 	self.imageTable = {}
 	self.propTable = {}
-	self.animTable = {}
-
-	self._filter = MOAITexture.GL_NEAREST
 end
 
 --[[
@@ -33,10 +30,6 @@ end
 
 	Returns: @Param 1: Name of the texture, @Param 2: pointer to the main quad.
 --]]
-function image:dropTexture(_texture)
-
-end
-
 function image:newTexture(_fileName, _parrentLayer, _name, _isDeck, _tileSize)
 
 	local temp = {
@@ -60,13 +53,8 @@ function image:newTexture(_fileName, _parrentLayer, _name, _isDeck, _tileSize)
 	else
 		print("TEXTURE ARRAY = NO NO")
 	end
-
-	
-
-
+	--self.imageTable[tableIndex].texture:setFilter ( MOAITexture.GL_LINEAR_MIPMAP_LINEAR )
 	self.imageTable[tableIndex].texture:load(_fileName)
-	self.imageTable[tableIndex].texture:setWrap( false )
-	self.imageTable[tableIndex].texture:setFilter ( self._filter)
 	local xtex, ytex = self.imageTable[tableIndex].texture:getSize()
 	if _isDeck == nil or _isDeck == false then
 		
@@ -88,8 +76,6 @@ function image:newTexture(_fileName, _parrentLayer, _name, _isDeck, _tileSize)
 
 
 		self.imageTable[tableIndex].image:setSize ( xtex/_tileSize, ytex/_tileSize )
-		--self.imageTable[tableIndex].image:setRect ( 0, _tileSize, _tileSize, 0)
-		--self.imageTable[tableIndex].image:setShape( MOAIGridSpace.OBLIQUE_SHAPE)
 		--self.imageTable[tableIndex].image:setRect(-xtex/_tileSize, -ytex/_tileSize, xtex/_tileSize, ytex/_tileSize)
 		--self.imageTable[tableIndex].image:setUVRect( 0, 0, _tileSize, _tileSize )		
 	end
@@ -98,58 +84,6 @@ function image:newTexture(_fileName, _parrentLayer, _name, _isDeck, _tileSize)
 	print("Table now contains: "..tableIndex.." images")
 	return temp.name, self.imageTable[tableIndex].image, self.imageTable[tableIndex].texture
 end
-
-function image:newDeckTexture(_fileName, _parrentLayer, _name, _tileSize, _isGrid)
-
-	local temp = {
-		id = #self.imageTable + 1,
-		pathToImage = _fileName,
-		image = nil,
-		prop = nil,
-		layer = _parrentLayer,
-		name = _name,
-		texture = nil,
-		isDeck = false,
-	}
-	table.insert(self.imageTable, temp)
-
-	local tableIndex = #self.imageTable
-	
-	self.imageTable[tableIndex].texture = MOAITexture.new ()
-
-	if self.imageTable[tableIndex].texture ~= nil then
-		print("TEXTURE ARRAY = OK")
-	else
-		print("TEXTURE ARRAY = NO NO")
-	end
-	--self.imageTable[tableIndex].texture:setFilter ( self._filter )
-	self.imageTable[tableIndex].texture:setWrap( false )
-	self.imageTable[tableIndex].texture:setFilter ( self._filter)	
-	self.imageTable[tableIndex].texture:load(_fileName)
-	--self.imageTable[tableIndex].texture:setWrap( true )
-	self.imageTable[tableIndex].texture:setFilter ( self._filter)
-	local xtex, ytex = self.imageTable[tableIndex].texture:getSize()
-
-	self.imageTable[tableIndex].isDeck = true
-	self.imageTable[tableIndex].image = MOAITileDeck2D.new ()
-
-	self.imageTable[tableIndex].image:setTexture ( self.imageTable[tableIndex].texture )
-
-
-	self.imageTable[tableIndex].image:setSize ( xtex/_tileSize, ytex/_tileSize)
-	if _isGrid ~= nil then
-		self.imageTable[tableIndex].image:setRect ( 0.25, _tileSize+0.25, _tileSize+0.25, 0+0.25)
-	end
-		--self.imageTable[tableIndex].image:setShape( MOAIGridSpace.OBLIQUE_SHAPE)
-		--self.imageTable[tableIndex].image:setRect(-xtex/_tileSize, -ytex/_tileSize, xtex/_tileSize, ytex/_tileSize)
-		--self.imageTable[tableIndex].image:setUVRect( 0, 0, _tileSize, _tileSize )		
-	
-	print("DECKS... ARE DECKS OK?")
-	print("New image created in self.ImageTable with id: "..temp.id.."")
-	print("Table now contains: "..tableIndex.." images")
-	return temp.name, self.imageTable[tableIndex].image, self.imageTable[tableIndex].texture
-end
-
 
 --[[
 	image:newImage:
@@ -161,41 +95,6 @@ end
 	inserts it into layer 1. [L1 only for now]
 	Returns: @Param 1: the position of the new prop(sprite) inside our PROP Table
 --]]
-function image:newDeckImage(_image, _x, _y, _deckTile)
-	
-	local imageToRender = nil 
-	local imageID = image:returnImageId(_image)
-
-
-
-	if imageID > 0 then
-		local temp = {
-			id = #self.propTable + 1,
-			prop = nil,
-			texBase = nil,
-			timer = MOAISim.getElapsedTime( ),
-		}
-		table.insert(self.propTable, temp)
-
-		local tableIndex = #self.propTable
-		
-		self.propTable[tableIndex].prop = MOAIProp2D.new()
-		self.propTable[tableIndex].prop:setDeck(self.imageTable[imageID].image)
-		self.propTable[tableIndex].texBase = imageID
-		core:returnLayerTable( )[self.imageTable[imageID].layer].layer:insertProp( self.propTable[tableIndex].prop )
-		self.propTable[tableIndex].prop:setIndex(_deckTile)	
-		self.propTable[tableIndex].prop:setLoc(_x, _y)
-		self.propTable[tableIndex]._x = _x
-		self.propTable[tableIndex]._y = _y
-		--self.propTable[tableIndex].color = {r = 1, g = 1, b = 1, a = 1}
-		return temp.id
-	else
-		print("Cannot draw image, Name: ")
-		return 0
-	end
-
-end
-
 function image:newImage(_image, _x, _y)
 	
 	local imageToRender = nil 
@@ -208,7 +107,6 @@ function image:newImage(_image, _x, _y)
 			id = #self.propTable + 1,
 			prop = nil,
 			texBase = nil,
-			timer = MOAISim.getElapsedTime( ),
 		}
 		table.insert(self.propTable, temp)
 
@@ -219,8 +117,7 @@ function image:newImage(_image, _x, _y)
 		self.propTable[tableIndex].texBase = imageID
 		core:returnLayerTable( )[self.imageTable[imageID].layer].layer:insertProp( self.propTable[tableIndex].prop )	
 		self.propTable[tableIndex].prop:setLoc(_x, _y)
-		self.propTable[tableIndex]._x = _x
-		self.propTable[tableIndex]._y = _y
+
 		return temp.id
 	else
 		print("Cannot draw image, Name: ")
@@ -240,28 +137,12 @@ end
 --]]
 function image:updateImage(_image, _x, _y)
 	local imageID = _image
+
 	if imageID > 0 then
 		local tableIndex = #self.propTable
-		if self.propTable[imageID]._x ~= _x or self.propTable[imageID]._y ~= _y then
-			--if MOAISim.getElapsedTime() > self.propTable[imageID].timer + 5 then
-				self.propTable[imageID].prop:setLoc(_x, _y)
-				self.propTable[imageID]._x = _x
-				self.propTable[imageID]._y = _y
-			--	self.propTable[imageID].timer = MOAISim.getElapsedTime()
-			--end
-		end
+		self.propTable[imageID].prop:setLoc(_x, _y)
 	else
 		print("PAHIL IN UPDATE IMAGE")
-	end
-end
-
-function image:getProp(_image)
-	local imageID = _image
-	if imageID > 0 then
-		return self.propTable[imageID].prop
-	else
-		print("WRONG IMAGE")
-		return nil
 	end
 end
 
@@ -274,50 +155,19 @@ function image:setVisible(_image, bool)
 	end
 end
 
-function image:setScale(_image, _scx, _scy, _time)
-	local imageID = _image
-	if imageID > 0 then
-		self.propTable[imageID].prop:seekScl(_scx, _scy, _time, MOAIEaseType.EASE_OUT)
-	end
-end
-
-function image:_setScale(_image, _scx, _scy, _time)
+function image:setScale(_image, _scx, _scy)
 	local imageID = _image
 	if imageID > 0 then
 		self.propTable[imageID].prop:setScl(_scx, _scy)
 	end
 end
 
-function image:_flipX(_image)
-
-end
-
-function image:getScale(_image)
-	local imageID = _image
-	local imageProp = self.propTable[imageID].prop
-	local scx = 0
-	local scy = 0
-	if imageProp ~= nil then
-		scx, scy = imageProp:getScl()
-	else
-		print("CANNOT SET INDEX")
-	end
-	return scx, scy
-end
-
-function image:removeProp(_image, _layer)
+function image:removeProp(_image)
 	if self.propTable[_image] ~= nil then
 		local imageID = _image
 		if imageID > 0 then
-			local lr
-			if _layer ~= nil then
-				lr = _layer
-			else
-				lr = 1
-			end
-			core:returnLayerTable()[lr].layer:removeProp(self.propTable[imageID].prop)
+			core:returnLayerTable()[1].layer:removeProp(self.propTable[imageID].prop)
 			self.propTable[imageID].prop = nil
-			--table.remove(self.propTable, _image)
 		else
 			print("WOOPS, something went wrong with image REMOVAL!")
 		end
@@ -424,25 +274,7 @@ end
 function image:setColor(_image,r,g,b,alpha)
 	imageID = _image
 	if imageID > 0 then
-		local _prop = self.propTable[imageID]
-		if _prop.r ~= r or _prop.g ~= g or _prop.b ~= b or _prop.a ~= alpha then
-			self.propTable[imageID].prop:setColor(r,g,b,alpha)
-			_prop.r = r
-			_prop.g = g
-			_prop.b = b
-			_prop.a = a
-		end
-
-	else
-		print("CANNOT SET COLOR FOR IMAGE: "..imageID.."")
-	
-	end
-end
-
-function image:seekColor(_image,r,g,b,alpha, _time)
-	imageID = _image
-	if imageID > 0 then
-		self.propTable[imageID].prop:seekColor(r,g,b,alpha, _time)
+		self.propTable[imageID].prop:setColor(r,g,b,alpha)
 
 	else
 		print("CANNOT SET COLOR FOR IMAGE: "..imageID.."")
@@ -492,104 +324,4 @@ function image:setGrid(_image, _grid)
 	else
 		print("CANNOT SET GRID")
 	end
-end
-
-function image:setIndex(_image, _index)
-	local imageID = _image
-	local imageProp = self.propTable[imageID].prop
-	if imageProp ~= nil then
-		imageProp:setIndex( _index)
-	else
-		print("CANNOT SET INDEX")
-		print("CANNOT SET INDEX")
-		print("CANNOT SET INDEX")
-		print("CANNOT SET INDEX")
-		print("CANNOT SET INDEX")
-		print("CANNOT SET INDEX")
-		print("CANNOT SET INDEX")
-	end
-	
-end
-function image:newAnim(_startFrame, _endFrame, _deck, _deckSize)
-	local temp = {
-		id = #self.animTable+1,
-		deck = image:newDeckTexture("Game/media/".._deck.."", 1, " tex ".._deck.."_anim", _deckSize, "NotNill"),
-		startFrame = _startFrame,
-		endFrame = _endFrame,
-		currentFrame = _startFrame,
-	}
-	temp.img = image:newDeckImage(temp.deck, 32, 32, temp.startFrame)
-	table.insert(self.animTable, temp)
-	print("TEMP IMG: "..temp.img.."")
-	return temp.img
-end
-
-function image:playAnim(_img, _x, _y, _startFrame, _endFrame, _delay)
-	local imageID = _img
-	local imageProp = self.propTable[imageID].prop
-	if imageProp ~= nil then
-		performWithDelay(_delay, image._animAdvance, _endFrame-_startFrame+1, self, imageProp, _x, _y, _startFrame, _endFrame)
-		--image:_animAdvance(imageProp, _x, _y, _startFrame, _endFrame)
-	else
-		print("ANIM PROP IS NIL")
-	end
-end
-
-function image:_animIncIndex(_index, _start, _max)
-	local idx = _index
-	if idx < _max then
-		idx = idx + 1
-	else
-		idx = _start
-	end
-	print("IDX AT WORK"..idx.."")
-	return idx
-end
-
-function image:_animAdvance(_prop, _x, _y, _start, _end)
-	_prop:setIndex(image:_animIncIndex(_prop:getIndex(), _start, _end) )
-	_prop:setLoc(_x, _y)
-	print("ADVANCING")
-end
-
-function image:_removeAnim(_image)
-	local imageID = _image
-	local imageProp = self.propTable[imageID].prop
-	if imageProp ~= nil then
-		core:returnLayerTable()[1].layer:removeProp(self.propTable[imageID].prop)
-		self.propTable[imageID].prop = nil
-		--table.remove()
-	end
-
-end
-
-function image:_dropEntirePropTable( )
-	for i = 1, #self.propTable, -1 do
-		tableIndex = 0
-		table.remove(self.propTable, i)
-		if i then
-			image:_dropEntirePropTable( )
-		end
-	end
-	self.propTable = {}
-end
-
-function image:_dropEntireImageTable( )
-	for i = 1, #self.imageTable, -1 do
-		table.remove(self.imageTable, i)
-		if i then
-			image:_dropEntireImageTable( )
-		end
-	end
-	self.imageTable = {}
-end
-
-function image:_count( )
-	local img = #self.imageTable
-	local prop = #self.propTable
-	for i = 1, 20 do
-		print("IMG: "..img.." PROP: "..prop.."")
-	end
-
-	MOAISim.forceGarbageCollection ()
 end

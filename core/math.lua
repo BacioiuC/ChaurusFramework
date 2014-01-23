@@ -1,12 +1,65 @@
+function performWithDelay (delay, func, repeats, ...)
+ local t = MOAITimer.new()
+ local _bool = nil
+ t:setSpan( delay/100 )
+ t:setListener( MOAITimer.EVENT_TIMER_END_SPAN,
+   function ()
+     t:stop()
+     t = nil
+     func( unpack( arg ) )
+
+        if repeats then
+            if repeats > 1 then
+                performWithDelay( delay, func, repeats - 1, unpack( arg ) )
+                _bool = true
+            elseif repeats == 0 then
+               performWithDelay( delay, func, 0, unpack( arg ) )
+               _bool = false
+
+            end
+        end
+        return _bool
+   end
+ )
+ t:start()
+ 
+ end
+
+ function math.even(number)
+    local bool = false
+    if math.mod(number, 2) == 0 then
+       bool = true
+    end
+
+    return bool
+ end
+
+function math.aprox(value1, value2, range)
+  local bool = false
+  if value1 - range <= value2 and value1 + range >= value2 then
+    bool = true
+  end
+
+  return bool  
+end
+
 function math.averageAngles(...)
     local x,y = 0,0
     for i=1,select('#',...) do local a= select(i,...) x, y = x+math.cos(a), y+math.sin(a) end
     return math.atan2(y, x)
 end
 
+function getDig( var, _deep )
+     return tonumber( tostring(var):sub( -_deep ) )
+end
+
 
 -- Returns the distance between two points.
 --function math.dist(x1,y1, x2,y2) return ((x2-x1)^2+(y2-y1)^2)^0.5 end
+function math.dist(x1, y1, x2, y2)
+  --Math.abs(start.x-destination.x) + Math.abs(start.y-destination.y));
+  return math.abs(x1-x2) + math.abs(y1-y2)
+end
 
 
 -- Returns the angle between two points.
@@ -80,4 +133,27 @@ function findProjectileTrajectory(ri, vi, g, t)
     local rfx = ri[1] + vi[1]*t + (g[1] * t^2)/2
     local rfy = ri[2] + vi[2]*t + (g[2] * t^2)/2
     return rfx, rfy
+end
+
+function spairs(t, order)
+    -- collect the keys
+    local keys = {}
+    for k in pairs(t) do keys[#keys+1] = k end
+
+    -- if order function given, sort by it by passing the table and keys a, b,
+    -- otherwise just sort the keys 
+    if order then
+        table.sort(keys, function(a,b) return order(t, a, b) end)
+    else
+        table.sort(keys)
+    end
+
+    -- return the iterator function
+    local i = 0
+    return function()
+        i = i + 1
+        if keys[i] then
+            return keys[i], t[keys[i]]
+        end
+    end
 end
