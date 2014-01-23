@@ -44,15 +44,15 @@ local button = require "gui/button"
 local awidgetevent = require "gui/awidgetevent"
 
 local resources = require "gui/support/resources"
-local textstyles = require "gui/textstyles"
+
 local ColumnWidget = class()
 local WidgetListColumn = class(button.Button)
 local WidgetListHeader = class(awindow.AWindow)
 local WidgetListRow = class(image.Image)
 _M.WidgetList = class(awindow.AWindow)
 
-local SCROLL_BAR_WIDTH = 2
-local HEADER_HEIGHT = 1
+local SCROLL_BAR_WIDTH = 0
+local HEADER_HEIGHT = 0
 local ROW_HEIGHT = HEADER_HEIGHT
 
 function ColumnWidget:init(obj, func, data)
@@ -73,19 +73,6 @@ function WidgetListHeader:setHeaderText(col, text)
 	end
 
 	self._children[col]:setText(text)
-end
-
-function WidgetListHeader:setHeaderStyle(col, style)
-	if (col < 1 or col > #self._children) then
-		return
-	end
-
-	print("HAPPENED MOFO")
-	self._children[col]:setTextStyle(textstyles.get( ""..style.."" ), 14)
-end
-
-function _M.WidgetList:_setHeaderStyle(col, style)
-	self._header:setHeaderStyle(col, style)
 end
 
 function WidgetListHeader:addColumn(text, width)
@@ -151,88 +138,41 @@ function WidgetListRow:getCell(idx)
 	return self._items[idx]
 end
 
-function WidgetListRow:setCellStyle(idx, style)
-	local cell = self._items[idx]
-	cell:setTextStyle(textstyles.get( ""..style.."" ), 14)
-	--for i, v in ipairs(self._items) do
-	--	v:setTextStyle(style)
-	--end
-end
-
 function WidgetListRow:setSelectionImage(fileName, r, g, b, a, idx, blendSrc, blendDst)
-	if self._interactable == true then
-		self:_setImage(self._rootProp, self._IMAGE_INDEX, self.SELECTED_IMAGES, fileName, r, g, b, a, idx, blendSrc, blendDst)
+	self:_setImage(self._rootProp, self._IMAGE_INDEX, self.SELECTED_IMAGES, fileName, r, g, b, a, idx, blendSrc, blendDst)
 
-		if (true == self._selected) then
-			self:_setCurrImages(self._IMAGE_INDEX, self.SELECTED_IMAGES)
-		end
+	if (true == self._selected) then
+		self:_setCurrImages(self._IMAGE_INDEX, self.SELECTED_IMAGES)
 	end
-end
-
-function WidgetListRow:setRowImage(fileName, r, g, b, a, idx, blendSrc, blendDst)
-	--[[self:_setImage(self._rootProp, self._IMAGE_INDEX, self._WIDGET_SPECIFIC_IMAGES, resources.getPath(fileName))
-	self:_setCurrImages(self._IMAGE_INDEX, self._WIDGET_SPECIFIC_IMAGES)--]]
-	self:_setImage(self._rootProp, self._IMAGE_INDEX, self.SELECTED_IMAGES, fileName, r, g, b, a, idx, blendSrc, blendDst)
-	self:_setImage(self._rootProp, self._IMAGE_INDEX, self.SELECTED_IMAGES, fileName, r, g, b, a, idx, blendSrc, blendDst)
-
-	--if (true == self._selected) then
-	self:_setCurrImages(self._IMAGE_INDEX, self.SELECTED_IMAGES)
-	--end
-
-
 end
 
 function WidgetListRow:setSelectedTextStyle(style)
-	if self._interactable == true then
-		self._selectedTextStyle = style
-	end
+	self._selectedTextStyle = style
 end
 
 function WidgetListRow:setUnselectedTextStyle(style)
-	if self._interactable == true then
-		self._unselectedTextStyle = style
-	end
+	self._unselectedTextStyle = style
 end
 
 function WidgetListRow:setSelected(flag)
-	if self._interactable == true then
-		self._selected = flag
-		local tex, style
+	self._selected = flag
+	local tex, style
 
-		if (true == flag) then
-			tex = self.SELECTED_IMAGES
-			--if self._styleNormal ~= nil then
-			--	style = self._styleNormal
-			--else
-				style = self._selectedTextStyle
-			--end
-			self._parent:_addSelection(self._idx)
+	if (true == flag) then
+		tex = self.SELECTED_IMAGES
+		style = self._selectedTextStyle
+		self._parent:_addSelection(self._idx)
 
-		else
-			tex = self.UNSELECTED_IMAGES
-			--if self._styleNormal ~= nil then
-			--	style = self._styleSelected
-			--else
-			style = self._unselectedTextStyle
-			--end
-			self._parent:_removeSelection(self._idx)
-		end
-
-		self:_setCurrImages(self._IMAGE_INDEX, tex)
-		for i, v in ipairs(self._items) do
-			v:setTextStyle(style)
-		end
+	else
+		tex = self.UNSELECTED_IMAGES
+		style = self._unselectedTextStyle
+		self._parent:_removeSelection(self._idx)
 	end
 
-	--[[for i = 1, #self._rows do
-		--_styleNormal
-		--_styleSelected
-		if flag == true then
-			self._rows[i]:setTextStyle(self._rows[i]._styleNormal)
-		else
-			self._rows[i]:setTextStyle(self._rows[i]._stylSelected)
-		end
-	end--]]
+	self:_setCurrImages(self._IMAGE_INDEX, tex)
+	for i, v in ipairs(self._items) do
+		v:setTextStyle(style)
+	end
 end
 
 function WidgetListRow:getSelected()
@@ -241,10 +181,6 @@ end
 
 function WidgetListRow:toggleSelection()
 	self:setSelected(not self:getSelected())
-end
-
-function WidgetListRow:setInteractable(_state)
-	self._interactable = _state
 end
 
 function WidgetListRow:init(gui, idx, widths, width, height)
@@ -264,7 +200,6 @@ function WidgetListRow:init(gui, idx, widths, width, height)
 	self.SELECTED_IMAGES = self._WIDGET_SPECIFIC_IMAGES
 	self.UNSELECTED_IMAGES = self.SELECTED_IMAGES + 1
 
-	self._interactable = true
 	self:setDim(width, height)
 
 	self:_setImage(self._rootProp, self._IMAGE_INDEX, self.UNSELECTED_IMAGES, resources.getPath("empty.png"))
@@ -356,7 +291,7 @@ function _M.WidgetList:_displayRows()
 	local minRow, maxRow
 
 	minRow = math.min(#self._rows, self._scrollBar:getTopItem())
-	maxRow = math.min(#self._rows, self._scrollBar:getTopItem() + self._scrollBar:getPageSize() - 1)-1
+	maxRow = math.min(#self._rows, self._scrollBar:getTopItem() + self._scrollBar:getPageSize() - 1)
 
 	for i = minRow, maxRow do
 		self._rows[i]:show()
@@ -370,10 +305,6 @@ end
 
 function _M.WidgetList:addColumn(text, width)
 	self._header:addColumn(text, width)
-end
-
-function _M.WidgetList:setRowTextStyle(_row, _style)
-	--local row = WidgetListRow(self._gui, _row, )
 end
 
 function _M.WidgetList:insertRow(before, data)
@@ -494,19 +425,14 @@ end
 ------------------- MY HACK: INSERT WIDGET AT TOP ------------------
 --------------------------------------------------------------------
 
-function _M.WidgetList:updateScrollBar(_w, _h)
-	--if #self._rows < 4 then
-	--	SCROLL_BAR_WIDTH = 2
-	--	HEADER_HEIGHT = 1
-	--else
-	if _w ~= nil and _h ~= nil then
-		SCROLL_BAR_WIDTH = _w
-		HEADER_HEIGHT = _h
+function _M.WidgetList:updateScrollBar( )
+	if #self._rows < 4 then
+		SCROLL_BAR_WIDTH = 0
+		HEADER_HEIGHT = 0
 	else
 		SCROLL_BAR_WIDTH = 2
 		HEADER_HEIGHT = 1
 	end
-	--end
 	--self._scrollBar = self._dGui:createVertScrollBar()
 	--self:_addWidgetChild(self._scrollBar)
 	--self._scrollBar:registerEventHandler(self._scrollBar.EVENT_SCROLL_BAR_POS_CHANGED, self, "_handleScrollPosChange")
@@ -668,14 +594,6 @@ function _M.WidgetList:_WidgetListEvents()
 	self.EVENT_WIDGET_LIST_REMOVE_ROW = "EventWidgetListRemoveRow"
 end
 
-function _M.WidgetList:_returnScrollbar( )
-	return self._scrollBar
-end
-
-function _M.WidgetList:_returnHeader( )
-	return self._header
-end
-
 function _M.WidgetList:init(gui)
 	awindow.AWindow.init(self, gui)
 
@@ -707,20 +625,6 @@ function _M.WidgetList:init(gui)
 	self:_addWidgetChild(self._header)
 
 	self:setRowHeight(ROW_HEIGHT)
-end
-
-function _M.WidgetList:disableScrollbar(flag)
-	if (true == flag) then
-		SCROLL_BAR_WIDTH = 0
-		HEADER_HEIGHT = 0
-		self:updateScrollBar(0, 0)
-	end
-
-end
-
-function _M.WidgetList:setOwnedStyle(_rowIDX, _styleNormal, _styleSelected)
-	self._rows[_rowIDX]._styleNormal = _styleNormal
-	self._rows[_rowIDX]._styleSelected = _styleSelected
 end
 
 return _M

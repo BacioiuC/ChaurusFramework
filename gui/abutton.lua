@@ -178,11 +178,16 @@ function _M.AButton:_onHandleTouchTap(event)
 	end
 end
 
+
+-- RGB Channels broken!
 function _M.AButton:setNormalImage(fileName, r, g, b, a, idx, blendSrc, blendDst)
 	self:_setImage(self._rootProp, self._BUTTON_INDEX, self.NORMAL_IMAGES, fileName, r, g, b, a, idx, blendSrc, blendDst)
 
 	if (false == self._over and false == self._pushed) then
 		self:_setCurrImages(self._BUTTON_INDEX, self.NORMAL_IMAGES)
+	end
+	if (idx ~= nil) then
+		print("IDX NOT NILL! HE HAS A VALUE OF: "..idx.."")
 	end
 end
 

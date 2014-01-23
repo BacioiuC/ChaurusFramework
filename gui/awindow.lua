@@ -89,6 +89,9 @@ function _M.AWindow:_handleEvent(eventType, event)
 	end
 end
 
+function _M.AWindow:_getEvent( )
+
+end
 -- function _M.AWindow:_onSetPriority()
 
 -- end
@@ -170,7 +173,7 @@ function _M.AWindow:_setCurrImages(objIdx, imageType)
 			quad = self._gui:_createQuad()
 			quads[i] = quad
 		end
-
+		v.texture:setFilter (MOAITexture.GL_NEAREST, MOAITexture.GL_NEAREST)
 		quad:setTexture(v.texture)
 
 		local prop = props[i]
@@ -354,10 +357,16 @@ function _M.AWindow:setPos(x, y)
 	self:_onSetPos()
 end
 
-function _M.AWindow:tweenPos(_twX, _twY)
+function _M.AWindow:tweenPos(_twX, _twY, _optionalTime)
 	--Tweening x = x + (target -x) *0.1
-	self._x = self._x + (_twX - self._x ) * 0.1
-	self._y = self._y + (_twY - self._y ) * 0.1
+	local tTime
+	if _optionalTime ~= nil then
+		tTime = _optionalTime
+	else
+		tTime = 0.1
+	end
+	self._x = self._x + (_twX - self._x ) * tTime
+	self._y = self._y + (_twY - self._y ) * tTime
 
 	local screenX, screenY = self._gui:_calcAbsValue(self._x, self._y)
 	self._rootProp:setLoc(screenX, -screenY)

@@ -50,7 +50,7 @@ function _M.Slider:_createSliderValueChangedEvent()
 end
 
 function _M.Slider:_setTextRect()
-	local width = #tostring(self._currValue) * 10
+	local width = #tostring(self._currValue) * 100
 
 	self._text:setRect(width)
 end

@@ -67,11 +67,11 @@ function _M.Text:getString()
 	return self._string
 end
 
-function _M.Text:setTextStyle(style)
+function _M.Text:setTextStyle(style, _hardcoded_Size)
 	self._textStyle = style
 	self._textBox:setStyle(style)
 
-	self:setRect(self:width(), self._align)
+	self:setRect(self:width(), self._align, _hardcoded_Size)
 	self:setPos(self:x(), self:y())
 end
 
@@ -103,11 +103,16 @@ function _M.Text:height()
 	return self._height
 end
 
-function _M.Text:setRect(width, align)
+function _M.Text:setRect(width, align, _hardcoded_Size)
 	self._width = width
 
 	if (nil ~= self._textStyle) then
-		local scale = self._textStyle:getSize()
+		local scale
+		if _hardcoded_Size ~= nil then
+			scale = _hardcoded_Size
+		else
+			scale = self._textStyle:getSize()
+		end
 		local lines = self:getLines()
 		self._height = scale + scale / 6
 		self._textBox:setRect(0, self._height * lines, self._width, 0)

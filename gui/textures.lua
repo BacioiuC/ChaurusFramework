@@ -49,13 +49,18 @@ function _M.get(fileName, group)
 	local tex = groupTextures[fileName]
 	if (nil == tex) then
 		tex = MOAITexture.new()
-		tex:setFilter ( MOAITexture.GL_LINEAR_MIPMAP_LINEAR )
+		tex:setFilter ( MOAITexture.GL_NEAREST)
+		--tex:setWrap(true)
 		tex:load(fileName)
 
 		groupTextures[fileName] = tex
 	end
 
 	return tex
+end
+
+function _M.getDeck(filename, group)
+
 end
 
 function _M.release(fileName, group)

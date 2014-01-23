@@ -77,11 +77,11 @@ function _M.GUI:_calcRelValue(x, y)
 	return x, y
 end
 
-function _M.GUI:_createGUILayer(width, height)
+function _M.GUI:_createGUILayer(width, height, w1, h1, w2, h2, ux, uy)
 	local layer = MOAILayer.new()
 
 	local viewport = MOAIViewport.new()
-	viewport:setSize(width, height)
+	viewport:setSize(w1, h1, w2, h2)
 	viewport:setScale(width, height)
 	viewport:setOffset(-1, 1)
 
@@ -459,15 +459,35 @@ end
 
 function _M.GUI:injectTouch(eventType, idx, x, y, tapCount)
 	local newTouch = {}
+	print("HAPPE-FUCKING-NING")
 
+	print("HAPPE-FUCKING-NING")
+	print("HAPPE-FUCKING-NING")
+	print("HAPPE-FUCKING-NING")
+	print("HAPPE-FUCKING-NING")
+	print("HAPPE-FUCKING-NING")
+	print("HAPPE-FUCKING-NING")
+	print("HAPPE-FUCKING-NING")
+	print("HAPPE-FUCKING-NING")
+	print("HAPPE-FUCKING-NING")
+	print("HAPPE-FUCKING-NING")
+	print("HAPPE-FUCKING-NING")
+	print("HAPPE-FUCKING-NING")
+	print("HAPPE-FUCKING-NING")
+	print("HAPPE-FUCKING-NING")
+	print("HAPPE-FUCKING-NING")
+	print("HAPPE-FUCKING-NING")
+	print("HAPPE-FUCKING-NING")
+	print("HAPPE-FUCKING-NING")
+	print("HAPPE-FUCKING-NING")
 	newTouch.type = eventType
 	newTouch.x = x
 	newTouch.y = y
 	newTouch.tapCount = tapCount
 	
-	if (touches[idx] ~= nil) then
-		newTouch.prevX = touches[idx].x
-		newTouch.prevY = touches[idx].y
+	if (self._touches[idx] ~= nil) then
+		newTouch.prevX = self._touches[idx].x
+		newTouch.prevY = self._touches[idx].y
 	end
 	
 	self._touches[idx] = newTouch
@@ -639,9 +659,20 @@ function _M.GUI:addToResourcePath(path, priority)
 	resources.addToPath(path, RESOURCE_GROUP, priority)
 end
 
+function _M.GUI:resetTheme( )
+	theme.Theme:reset( )
+end
+
 function _M.GUI:setTheme(fileName)
+	self:resetTheme( )
+	self._themes = {}
+	self._currTheme = {}
+	self._factory:setThemeToNil( )
+
 	fileName = resources.getPath(fileName, RESOURCE_GROUP)
 	if (nil == fileName) then
+		print("CAUSE FOR RETURN?")
+
 		return
 	end
 
@@ -653,6 +684,8 @@ function _M.GUI:setTheme(fileName)
 
 	self._currTheme = fileName
 	self._factory:setTheme(t)
+
+	print("CALLING ALL CARS, CALLING ALL CARS! SUCKIT JEFF BROADY!")
 end
 
 function _M.GUI:setCurrTextStyle(name)
@@ -712,7 +745,31 @@ function _M.GUI:shutdown()
 	end
 end
 
-function _M.GUI:init(width, height)
+
+function _M.GUI:_updateGUILayer(width, height, w1, h1, w2, h2, ux, uy)
+	self._width = width
+	self._height = height
+	self._viewport:setSize(w1, h1, w2, h2)
+	self._viewport:setScale(width, height)
+
+
+	print("HAPPENED")
+	print("HAPPENED")
+	print("HAPPENED")
+	print("HAPPENED")
+end
+
+function _M.GUI:getMouseX( )
+	return self._currMouseX
+end
+
+function _M.GUI:init(width, height, w1, h1, w2, h2, ux, uy)
+	print("INITEEEEDDDDDDDD")
+	print("INITEEEEDDDDDDDD")
+	print("INITEEEEDDDDDDDD")
+	print("INITEEEEDDDDDDDD")
+	print("INITEEEEDDDDDDDD")
+	print("INITEEEEDDDDDDDD")
 	self._width = width
 	self._height = height
 
@@ -737,7 +794,8 @@ function _M.GUI:init(width, height)
 	self._factory = factory.Factory(self)
 	self._layoutParser = layoutparser.LayoutParser(self._factory)
 
-	self:_createGUILayer(width, height)
+	print("w2 is: "..ux.." H2 is: "..uy.."")
+	self:_createGUILayer(width, height, w1, h1, w2, h2, ux, uy)
 end
 
 return _M

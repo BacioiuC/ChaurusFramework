@@ -304,6 +304,10 @@ function _M.Factory:create(widgetType, ...)
 	return widget
 end
 
+function _M.Factory:setThemeToNil( )
+	self._theme = nil
+end
+
 function _M.Factory:setTheme(theme)
 	self._theme = theme
 end

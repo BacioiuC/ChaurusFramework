@@ -216,7 +216,7 @@ function _M.EditBox:init(gui)
 	self._cursorPos = 1
 	self._internalText = ""
 	self._maxLength = 20
-	self._allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.:,;(:*!?' "
+	self._allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.:,;():*!?' "
 
 	self:setTextAlignment(self.TEXT_ALIGN_LEFT, self.TEXT_ALIGN_CENTER)
 end

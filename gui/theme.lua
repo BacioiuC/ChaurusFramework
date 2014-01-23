@@ -200,4 +200,22 @@ function _M.Theme:init(fileName)
 	self:_load(fileName)
 end
 
+function _M.Theme:reset( )
+	self.texture = nil
+	self.labelTheme = nil
+	self.buttonTheme = nil
+	self.checkBoxTheme = nil
+	self.radioButtonTheme = nil
+	self.editBoxTheme = nil
+	self.vertScrollBarTheme = nil
+	self.horzScrollBarTheme = nil
+	self.vertSliderTheme = nil
+	self.horzSliderTheme = nil
+	self.progressBarTheme = nil
+	self.textBoxTheme = nil
+	self.widgetListTheme = nil
+
+
+end
+
 return _M

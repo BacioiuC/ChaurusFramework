@@ -45,6 +45,9 @@ _M.Image = class(awindow.AWindow)
 function _M.Image:setImage(fileName, r, g, b, a, idx, blendSrc, blendDst)
 	self:_setImage(self._rootProp, self._IMAGE_INDEX, self.IMAGES, fileName, r, g, b, a, idx, blendSrc, blendDst)
 	self:_setCurrImages(self._IMAGE_INDEX, self.IMAGES)
+	
+		--print("============================  IDX VALUE IS: ")
+	
 end
 
 function _M.Image:getImage(idx)
