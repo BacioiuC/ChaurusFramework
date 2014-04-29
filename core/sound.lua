@@ -47,7 +47,7 @@ function sound:new(_category, _string, _volume, _loopFlag, _streamFlag)
 end
 
 function sound:playFromCategory(_id)
-	local cat = _id
+local cat = _id
 	local tab = self._soundTable[cat]
 	if #tab > 0 then
 		local snd = tab[math.random(1, #tab)]
@@ -55,12 +55,21 @@ function sound:playFromCategory(_id)
 	end
 end
 
-function sound:setGeneralVolume(_value)
+function sound:setGeneralVolume(_value, noBgMusic)
 
 
 	for i,v in ipairs(self._soundTable) do
-		for k, j in ipairs(v) do
-			j.sound:setVolume(_value)
+		if i ~= 3 then
+			for k, j in ipairs(v) do
+				j.sound:setVolume(_value)
+			end
+		elseif i == 3 then
+			print("YES IS 3")
+			for k, j in ipairs(v) do
+				if _value - 0.4 > 0 then
+					j.sound:setVolume(_value-0.4)
+				end
+			end		
 		end
 	end
 
@@ -98,6 +107,11 @@ function sound:stopAllFromCategory(_id)
 		end
 	end
 
+end
+
+function sound:isPlaying(_sndFile)
+	local bool = _sndFile.sound:isPlaying()
+	return bool
 end
 
 function sound:stopAll( )

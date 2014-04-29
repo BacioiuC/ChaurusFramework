@@ -11,7 +11,8 @@ function initStates( )
 	state[8] = "Drop"
 	state[9] = "LevelEditor"
 	state[10] = "FreeBattle"
-	currentState = 2
+	state[11] = "LayoutStuff"
+	currentState = 1
 
 	_bGuiLoaded = false
 	_bGameLoaded = false
@@ -21,7 +22,7 @@ function handleStates( )
 	local _st = state[currentState]
 
 	if _st == "Intro" then
-
+		introLoop( )
 	elseif _st == "MainMenu" then
 		ammLoop( )
 	elseif _st == "Options" then
@@ -40,9 +41,35 @@ function handleStates( )
 		lvEditorLoop( )
 	elseif _st == "FreeBattle" then
 		freeBattleMenu( )
+	elseif _st == "LayoutStuff" then
+		layoutTesting( )
 	else
 		print("STATE OUT OF BOUNDS")
 	end
+end
+
+function layoutTesting( )
+
+end
+
+function introLoop( )
+	if _bGameLoaded == false then
+		_bGameLoaded = true
+		print("INTRO HAPPENING!")
+		print("Place a init function here :)")
+	else
+	
+
+	end
+
+	if _bGuiLoaded == false then
+		--camera:init( )
+		
+		_bGuiLoaded = true
+
+	else
+	end
+	
 end
 
 function freeBattleMenu( )
@@ -56,7 +83,7 @@ function freeBattleMenu( )
 	end
 
 	if _bGuiLoaded == false then
-		interface:_init_map_selection( )
+
 		
 		--camera:init( )
 		
@@ -64,8 +91,7 @@ function freeBattleMenu( )
 
 	else
 
-		interface:_sm_updatePanel( )
-		interface:_update_map_selection( )
+
 
 	end
 end
@@ -80,11 +106,11 @@ function optionsMenu( )
 	if _bGuiLoaded == false then
 		
 		--camera:init( )
-		interface:_init_commander_sel( )
+
 		_bGuiLoaded = true
 
 	else
-		interface:_cs_updatePanels( )
+
 
 	end
 end
@@ -97,14 +123,13 @@ function ammLoop( )
 	end
 
 	if _bGuiLoaded == false then
-		interface:initMM( )
+
 		--camera:init( )
 		
 		_bGuiLoaded = true
 
 	else
 
-		interface:_updateMMButtons( )
 
 	end
 end
@@ -114,8 +139,7 @@ function lvsLoop( )
 
 		--interface:initLVSelect( )
 
-		interface:_init_worldMap( )
-		interface:setup_cursors( )
+
 		_bGuiLoaded = true
 		
 	else
@@ -126,13 +150,10 @@ function lvsLoop( )
 	end
 
 	if _bGameLoaded == false then
-		anim:dropAll( )
-		camera:init( )
-		worldMap:init( )
+
 		_bGameLoaded = true
 	else
-		camera:update( )
-		worldMap:loop( )--worldMap:update( )
+
 	end
 end
 
@@ -140,36 +161,21 @@ function apLoop( )
 	
 
 	if _bGuiLoaded == false then
-		interface:initAP( )
-		interface:setup_cursors( )	
+
 
 		_bGuiLoaded = true
 	else
 
 
-		interface:updateInLoop( )
-		interface:updatePanels( )
 	end
 
 	if _bGameLoaded == false then
-		Game.victory = false
-		map:initAP (Game.mapFile)
+
 		
-		camera:init( )
-		building:init(Game.mapFile)
-		
-		unit:init(Game.mapFile)
-		player1.coins = player1.initialCoins
-		player2.coins = player2.initialCoins
-		map:setOffset(32, 16)
-		map:_updateFogOfWar( )
+		--map:_setCameraToCorrectPlayerPos( )
 		_bGameLoaded = true
 	else
-		camera:update( )
 
-		map:update( )
-		building:update( )
-		unit:update( )	
 	end
 
 end
@@ -178,13 +184,12 @@ function lvEditorLoop( )
 
 	if _bGameLoaded == false then
 		
-		lEditor:init( )
+
 		
 		
 		_bGameLoaded = true
 	else
-		lEditor:update( )
-		camera:update( )
+
 		
 	end
 

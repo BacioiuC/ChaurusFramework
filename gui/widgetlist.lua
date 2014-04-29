@@ -94,13 +94,18 @@ function WidgetListHeader:addColumn(text, width)
 		x = x + v:width()
 	end
 
+	local y = 0
+	for i,v in ipairs(self._widgetChildren) do
+		y = y + v:height()
+	end
+
 	local col = WidgetListColumn(self._gui)
 	self:_addWidgetChild(col)
-	col:setPos(x, 0)
+	col:setPos(x, y)
 	col:setDim(width, self._height)
 	col:setText(text)
 	col:setTextStyle(self._gui._factory._textStyle)
-	col:setTextAlignment(col.TEXT_ALIGN_LEFT, col.TEXT_ALIGN_CENTER)
+	col:setTextAlignment(col.TEXT_ALIGN_CENTER, col.TEXT_ALIGN_CENTER)
 	col:setAllImages(resources.getPath("empty.png"))
 
 	self._colWidths[#self._colWidths + 1] = width
@@ -129,15 +134,60 @@ function WidgetListRow:getIdx()
 	return self._idx
 end
 
+
 function WidgetListRow:setWidget(idx, widget)
 	local x = 0
 	for i = 1, idx - 1 do
 		x = x + self._colWidths[i]
 	end
 
-	widget:setPos(x, 0)
+	if self._oneRowLower == true then
+		--[[print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")
+		print("ONE ROW TRUE: "..x.."")--]]
+		widget:setPos(x, 0)
+	else
+		--[[print("ONE ROW FALSE: "..x.."")
+		print("ONE ROW FALSE: "..x.."")
+		print("ONE ROW FALSE: "..x.."")
+		print("ONE ROW FALSE: "..x.."")
+		print("ONE ROW FALSE: "..x.."")
+		print("ONE ROW FALSE: "..x.."")
+		print("ONE ROW FALSE: "..x.."")
+		print("ONE ROW FALSE: "..x.."")
+		print("ONE ROW FALSE: "..x.."")
+		print("ONE ROW FALSE: "..x.."")
+		print("ONE ROW FALSE: "..x.."")
+		print("ONE ROW FALSE: "..x.."")
+		print("ONE ROW FALSE: "..x.."")
+		print("ONE ROW FALSE: "..x.."")
+		print("ONE ROW FALSE: "..x.."")
+		print("ONE ROW FALSE: "..x.."")--]]
+		widget:setPos(x, 0)
+	end
 	widget:setDim(self._colWidths[idx], self._height)
-	widget:setTextAlignment(widget.TEXT_ALIGN_LEFT, widget.TEXT_ALIGN_CENTER)
+	widget:setTextAlignment(widget.TEXT_ALIGN_CENTER, widget.TEXT_ALIGN_CENTER)
 	widget:setInputPassThrough(true)
 	self._items[idx] = widget
 	self:_addWidgetChild(widget)
@@ -199,17 +249,18 @@ function WidgetListRow:setSelected(flag)
 		self._selected = flag
 		local tex, style
 
+		tex = self.SELECTED_IMAGES
 		if (true == flag) then
-			tex = self.SELECTED_IMAGES
+			
 			--if self._styleNormal ~= nil then
 			--	style = self._styleNormal
 			--else
-				style = self._selectedTextStyle
+			style = self._selectedTextStyle
 			--end
 			self._parent:_addSelection(self._idx)
 
 		else
-			tex = self.UNSELECTED_IMAGES
+			--tex = self.UNSELECTED_IMAGES
 			--if self._styleNormal ~= nil then
 			--	style = self._styleSelected
 			--else
@@ -247,6 +298,10 @@ function WidgetListRow:setInteractable(_state)
 	self._interactable = _state
 end
 
+function WidgetListRow:setOneRowLower(_state)
+	self._oneRowLower = _state
+end
+
 function WidgetListRow:init(gui, idx, widths, width, height)
 	awindow.AWindow.init(self, gui)
 
@@ -259,6 +314,8 @@ function WidgetListRow:init(gui, idx, widths, width, height)
 	self._items = {}
 	self._selectedTextStyle = nil
 	self._unselectedTextStyle = nil
+
+	self._oneRowLower = false
 
 	self._IMAGE_INDEX = self._WIDGET_SPECIFIC_OBJECTS_INDEX
 	self.SELECTED_IMAGES = self._WIDGET_SPECIFIC_IMAGES
@@ -356,7 +413,7 @@ function _M.WidgetList:_displayRows()
 	local minRow, maxRow
 
 	minRow = math.min(#self._rows, self._scrollBar:getTopItem())
-	maxRow = math.min(#self._rows, self._scrollBar:getTopItem() + self._scrollBar:getPageSize() - 1)-1
+	maxRow = math.min(#self._rows, self._scrollBar:getTopItem() + self._scrollBar:getPageSize() - 1)
 
 	for i = minRow, maxRow do
 		self._rows[i]:show()
@@ -676,6 +733,8 @@ function _M.WidgetList:_returnHeader( )
 	return self._header
 end
 
+
+
 function _M.WidgetList:init(gui)
 	awindow.AWindow.init(self, gui)
 
@@ -698,6 +757,7 @@ function _M.WidgetList:init(gui)
 	self._maxSelections = 1
 	self._selectedTextStyle = nil
 	self._unselectedTextStyle = nil
+	
 
 	self._scrollBar = gui:createVertScrollBar()
 	self:_addWidgetChild(self._scrollBar)
@@ -721,6 +781,10 @@ end
 function _M.WidgetList:setOwnedStyle(_rowIDX, _styleNormal, _styleSelected)
 	self._rows[_rowIDX]._styleNormal = _styleNormal
 	self._rows[_rowIDX]._styleSelected = _styleSelected
+end
+
+function _M.WidgetList:getNumRows( )
+	return #self._rows
 end
 
 return _M

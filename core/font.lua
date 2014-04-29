@@ -11,7 +11,7 @@ function font:init( )
 end
 
 function font:newWord(_x, _y, _string, _imageFile, _size, _scale, _layer)
-	local temp = {
+--[[	local temp = {
 		id = #self._wordTable + 1,
 		x = _x,
 		y = _y,
@@ -31,11 +31,11 @@ function font:newWord(_x, _y, _string, _imageFile, _size, _scale, _layer)
 
 	table.insert(self._wordTable, temp)
 
-	return temp.id
+	return temp.id--]]
 end
 
 function font:newLetter(_letter, _parrent)
-	local l = _letter
+	--[[local l = _letter
 	local idx = self:_getIndex(l)
 	if idx ~= nil then
 		local prop = image:newDeckImage(_parrent._fontTexture,  _parrent.x + #_parrent.prop*_parrent.size, _parrent.y, idx)
@@ -44,12 +44,12 @@ function font:newLetter(_letter, _parrent)
 		end
 		--table.insert(temp, prop)
 		table.insert(_parrent.prop, prop)
-	end
+	end--]]
 end
 
 function font:draw(_id, _x, _y, _bool)
 	--for i,v in ipairs(self._wordTable) do
-	local v = self._wordTable[_id]
+	--[[local v = self._wordTable[_id]
 		if v ~= nil and v.markForDel == false then
 			if type(v.prop) == "table" then
 				for k, j in ipairs(v.prop) do
@@ -59,26 +59,26 @@ function font:draw(_id, _x, _y, _bool)
 					end
 				end
 			end
-		end
+		end--]]
 	--end
 end
 
 function font:_getIndex(_letter)
-	for i,v in ipairs(self._string) do 
+	--[[for i,v in ipairs(self._string) do 
 		if v == _letter then
 			return i
 		end
-	end
+	end--]]
 end
 
 function font:dropAll( )
-	for i,v in ipairs(self._wordTable) do
+	--[[for i,v in ipairs(self._wordTable) do
 		font:delete(i)
-	end	
+	end	--]]
 end
 
 function font:delete(_id)
-	local fnt = self._wordTable[_id]
+	--[[local fnt = self._wordTable[_id]
 	fnt.markForDel = true
 	print("HAPPENING")
 	for k, j in ipairs(fnt.prop) do
@@ -86,18 +86,18 @@ function font:delete(_id)
 	end
 
 
-	fnt = nil
+	fnt = nil--]]
 end
 
 function font:setColor(_id, r, g, b, a)
-	local fnt = self._wordTable[_id]
+	--[[local fnt = self._wordTable[_id]
 	for i,v in ipairs(fnt.prop) do
 		image:setColor(v, r, g, b, a)
-	end
+	end--]]
 end
 
 function font:setText(_id, _string, _x, _y, _bool)
-	local fontID = self._wordTable[_id]
+	--[[local fontID = self._wordTable[_id]
 	if _string ~= fontID.string then
 		for k, j in ipairs(fontID.prop) do
 			--image:removeProp(j, fontID.layer)
@@ -108,7 +108,9 @@ function font:setText(_id, _string, _x, _y, _bool)
 				l = _string:sub(k, k)
 				idx = font:_getIndex(l)
 				print("IDX IS: "..l.."")
-				image:setIndex(j, idx )
+				if idx ~= 0 then
+					image:setIndex(j, idx )
+				end
 			else
 				idx = 30
 				image:setIndex(j, idx )
@@ -119,12 +121,9 @@ function font:setText(_id, _string, _x, _y, _bool)
 			--j = nil
 		end
 		--fontID.prop = {}
-		--[[for i = 1, #_string do
-			local letter = _string:sub(i, i)
-			self:newLetter(letter, fontID)
-		end--]]
+
 		fontID.string = _string
 	end
-	self:draw(_id, _x, _y, _bool)
+	self:draw(_id, _x, _y, _bool)--]]
 
 end

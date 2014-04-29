@@ -1,155 +1,457 @@
 local data = {
--------------------------------------------
--------------------------------------------
-	logo = {
+	background = {
 		widget = "image",
-		pos = {5, 10},
-		dim = {25, 75},
-		text = "",
-		textHorzAlign = "center",
-		textVertAlign = "bottom",
+		dim = { 100, 100 },
+		pos = { 0, 0 },
 		images = {
 			{
-				fileName = "temp_logo.png",
+
+				fileName = "../gui/main_menu/main_menu.png"
 			},
-		},
-	},
--------------------------------------------
--------------------------------------------
-	Career_Button = {
-		widget = "button",
-		pos = {55, 12},
-		dim = {46, 15},
-		text = "",
-		images = {
-			normal = {
-				{
-					fileName = "career_normal.png",
-					color = {1, 1, 1, 1},
+
+		}, -- end of images
+
+		children = {
+
+			logoBg = {
+				widget = "image",
+				dim = { 35, 65 },
+				pos = { 33, 0, },
+				images = {
+					{
+						fileName = "../gui/main_menu/bg3.png"
+					},
+
+				},		
+
+
+				children = {
+					logo = {
+						widget = "image",
+						dim = {35, 50},
+						pos = {0, 7},
+						images = {
+							{
+								fileName = "../gui/main_menu/logo.png"
+							},
+						},						
+
+					},
 				},
-			},
-			hover = {
-				{
-					fileName = "career_hover.png",
-					color = {1, 1, 1, 1},
+			}, -- end of logo bg
+
+
+
+			battleBg = {
+				widget = "image",
+				dim = { 35, 36 },
+				pos = { -2, 64, },
+				images = {
+					{
+						fileName = "../gui/main_menu/bg2.png"
+					},
+
+				},		
+
+
+				children = {
+					btnBattle = {
+						widget = "button",
+						dim = { 28, 18 },
+						pos = { 4, 8 },
+						text = "Free Battle",
+						images = {
+							normal = {
+								{
+									fileName = "../gui/main_menu/button_temp.png",
+									color = {1, 1, 1, 1},
+								},
+							},
+
+							pushed = {
+								{
+									fileName = "../gui/main_menu/button_temp_hover.png",
+									color = {1, 1, 1, 1},
+								},
+							},
+
+							hover = {
+								{
+									fileName = "../gui/main_menu/button_temp_hover.png",
+									color = {1, 1, 1, 1},
+								},
+							},
+						},
+					}, -- end of button battle
 				},
+
 			},
-			pushed = {
-				{
-					fileName = "career_pressed.png",
-					color = {0, 1, 1, 1},
+
+			editorBg = {
+				widget = "image",
+				dim = { 35, 36 },
+				pos = { 33, 64, },
+				images = {
+					{
+						fileName = "../gui/main_menu/bg2.png"
+					},
+
+				},		
+
+
+				children = {
+					btnEditor = {
+						widget = "button",
+						dim = { 28, 18 },
+						pos = { 4, 8 },
+						text = "Editor",
+						images = {
+							normal = {
+								{
+									fileName = "../gui/main_menu/button_temp.png",
+									color = {1, 1, 1, 1},
+								},
+							},
+
+							pushed = {
+								{
+									fileName = "../gui/main_menu/button_temp_hover.png",
+									color = {1, 1, 1, 1},
+								},
+							},
+
+							hover = {
+								{
+									fileName = "../gui/main_menu/button_temp_hover.png",
+									color = {1, 1, 1, 1},
+								},
+							},
+						},
+					}, -- end of button editor
 				},
+
 			},
-			disabled = {
-				{
-					fileName = "cathead.png",
-					color = {1, 1, 1, 1},
+
+			optionsBg = {
+				widget = "image",
+				dim = { 35, 36 },
+				pos = { 68, 64, },
+				images = {
+					{
+						fileName = "../gui/main_menu/bg2.png"
+					},
+
+				},		
+
+
+				children = {
+					btnOptions = {
+						widget = "button",
+						dim = { 28, 18 },
+						pos = { 2, 8 },
+						text = "Options",
+						images = {
+							normal = {
+								{
+									fileName = "../gui/main_menu/button_temp.png",
+									color = {1, 1, 1, 1},
+								},
+							},
+
+							pushed = {
+								{
+									fileName = "../gui/main_menu/button_temp_hover.png",
+									color = {1, 1, 1, 1},
+								},
+							},
+
+							hover = {
+								{
+									fileName = "../gui/main_menu/button_temp_hover.png",
+									color = {1, 1, 1, 1},
+								},
+							},
+						},
+					}, -- end of button options
+
+					btnQuit = {
+						widget = "button",
+						dim = { 28, 7 },
+						pos = { 2, 26 },
+						text = "Quit",
+						images = {
+							normal = {
+								{
+									fileName = "../gui/main_menu/button_temp.png",
+									color = {1, 1, 1, 1},
+								},
+							},
+
+							pushed = {
+								{
+									fileName = "../gui/main_menu/button_temp_hover.png",
+									color = {1, 1, 1, 1},
+								},
+							},
+
+							hover = {
+								{
+									fileName = "../gui/main_menu/button_temp_hover.png",
+									color = {1, 1, 1, 1},
+								},
+							},
+						},
+					}, -- end of button options
 				},
-			},
-		},
-	},
--------------------------------------------
--------------------------------------------
-	QuickPlay_Button = {
-		widget = "button",
-		pos = {55, 29},
-		dim = {46, 15},
-		text = "",
-		images = {
-			normal = {
-				{
-					fileName = "quickplay_normal.png",
-					color = {1, 1, 1, 1},
+			}, -- end of options bg
+
+
+
+			bgBar = {
+				widget = "image",
+				dim = { 1, 22 },
+				pos = { 60, 70, },
+				images = {
+					{
+						fileName = "../gui/main_menu/bgBar.png"
+					},
+
 				},
-			},
-			hover = {
-				{
-					fileName = "quickplay_hover.png",
-					color = {1, 1, 1, 1},
-				},
-			},
-			pushed = {
-				{
-					fileName = "quickplay_clicked.png",
-					color = {0, 1, 1, 1},
-				},
-			},
-			disabled = {
-				{
-					fileName = "cathead.png",
-					color = {1, 1, 1, 1},
-				},
-			},
-		},
-	},
------------------------------------------
--------------------------------------------
-	Options_Button = {
-		widget = "button",
-		pos = {55, 46},
-		dim = {46, 15},
-		text = "",
-		images = {
-			normal = {
-				{
-					fileName = "options_normal.png",
-					color = {1, 1, 1, 1},
-				},
-			},
-			hover = {
-				{
-					fileName = "options_hover.png",
-					color = {1, 1, 1, 1},
-				},
-			},
-			pushed = {
-				{
-					fileName = "options_pressed.png",
-					color = {0, 1, 1, 1},
-				},
-			},
-			disabled = {
-				{
-					fileName = "cathead.png",
-					color = {1, 1, 1, 1},
-				},
-			},
-		},
-	},
------------------------------------------
--------------------------------------------
-	Info_Button = {
-		widget = "button",
-		pos = {90, 84},
-		dim = {10, 13},
-		text = "",
-		images = {
-			normal = {
-				{
-					fileName = "info_normal.png",
-					color = {1, 1, 1, 1},
-				},
-			},
-			hover = {
-				{
-					fileName = "info_hover.png",
-					color = {1, 1, 1, 1},
-				},
-			},
-			pushed = {
-				{
-					fileName = "info_pressed.png",
-					color = {0, 1, 1, 1},
-				},
-			},
-			disabled = {
-				{
-					fileName = "cathead.png",
-					color = {1, 1, 1, 1},
-				},
-			},
-		},
-	},
+
+				children = {
+
+
+
+
+
+					optMenu = {
+						widget = "image",
+						dim = { 32, 66 },
+						pos = { 100, -70 },
+						images = {
+							{
+								fileName = "../gui/main_menu/bg4.png",
+							},
+						},
+						children = {
+							volLabel = {
+								widget = "label",
+								pos = {2, 2},
+								dim = {38, 2},
+								text = "MASTER VOLUME ",
+							}, -- end of volSlider
+
+							volSlider = { 
+								widget = "slider",
+								pos = {2, 6},
+								dim = {26, 8},
+								--vert = false,
+								
+							}, -- end of volSlider
+
+							lbMusic = {
+								widget = "label",
+								pos = { 2, 18 },
+								dim = { 38, 2 },
+								text = "BACKGROUND MUSIC",
+							},
+
+							btnMusicOn = {
+								widget = "button",
+								pos = { 2, 22 },
+								dim = { 12, 8 },
+								text = "ON",
+								images = {
+									normal = {
+										{
+											fileName = "../gui/main_menu/button_temp.png",
+											color = {1, 1, 1, 1},
+										},
+									},
+
+									pushed = {
+										{
+											fileName = "../gui/main_menu/button_temp_hover.png",
+											color = {1, 1, 1, 1},
+										},
+									},
+
+									hover = {
+										{
+											fileName = "../gui/main_menu/button_temp_hover.png",
+											color = {1, 1, 1, 1},
+										},
+									},
+								}
+							},
+
+							btnMusicOff = {
+								widget = "button",
+								pos = { 16, 22 },
+								dim = { 12, 8 },
+								text = "OFF",
+								images = {
+									normal = {
+										{
+											fileName = "../gui/main_menu/button_temp.png",
+											color = {1, 1, 1, 1},
+										},
+									},
+
+									pushed = {
+										{
+											fileName = "../gui/main_menu/button_temp_hover.png",
+											color = {1, 1, 1, 1},
+										},
+									},
+
+									hover = {
+										{
+											fileName = "../gui/main_menu/button_temp_hover.png",
+											color = {1, 1, 1, 1},
+										},
+									},
+								}
+							}, -- end of bttnMusic
+
+							lbZoom = {
+								widget = "label",
+								pos = { 2, 32 },
+								dim = { 38, 2 },
+								text = "ZOOM HANDLE",
+							},
+
+							btnZoomOn = {
+								widget = "button",
+								pos = { 2, 36 },
+								dim = { 12, 8 },
+								text = "ON",
+								images = {
+									normal = {
+										{
+											fileName = "../gui/main_menu/button_temp.png",
+											color = {1, 1, 1, 1},
+										},
+									},
+
+									pushed = {
+										{
+											fileName = "../gui/main_menu/button_temp_hover.png",
+											color = {1, 1, 1, 1},
+										},
+									},
+
+									hover = {
+										{
+											fileName = "../gui/main_menu/button_temp_hover.png",
+											color = {1, 1, 1, 1},
+										},
+									},
+								}
+							},
+
+							btnZoomOff = {
+								widget = "button",
+								pos = { 16, 36 },
+								dim = { 12, 8 },
+								text = "OFF",
+								images = {
+									normal = {
+										{
+											fileName = "../gui/main_menu/button_temp.png",
+											color = {1, 1, 1, 1},
+										},
+									},
+
+									pushed = {
+										{
+											fileName = "../gui/main_menu/button_temp_hover.png",
+											color = {1, 1, 1, 1},
+										},
+									},
+
+									hover = {
+										{
+											fileName = "../gui/main_menu/button_temp_hover.png",
+											color = {1, 1, 1, 1},
+										},
+									},
+								}
+							}, -- end of bttnMusic
+
+							confLabel = {
+								widget = "label",
+								pos = { 2, 46 },
+								dim = { 38, 2 },
+								text = "FULLSCREEN",
+							},
+
+							btnConOn = {
+								widget = "button",
+								pos = { 2, 50 },
+								dim = { 12, 8 },
+								text = "ON",
+								images = {
+									normal = {
+										{
+											fileName = "../gui/main_menu/button_temp.png",
+											color = {1, 1, 1, 1},
+										},
+									},
+
+									pushed = {
+										{
+											fileName = "../gui/main_menu/button_temp_hover.png",
+											color = {1, 1, 1, 1},
+										},
+									},
+
+									hover = {
+										{
+											fileName = "../gui/main_menu/button_temp_hover.png",
+											color = {1, 1, 1, 1},
+										},
+									},
+								}
+							},
+
+							btnConfOff = {
+								widget = "button",
+								pos = { 16, 50 },
+								dim = { 12, 8 },
+								text = "OFF",
+								images = {
+									normal = {
+										{
+											fileName = "../gui/main_menu/button_temp.png",
+											color = {1, 1, 1, 1},
+										},
+									},
+
+									pushed = {
+										{
+											fileName = "../gui/main_menu/button_temp_hover.png",
+											color = {1, 1, 1, 1},
+										},
+									},
+
+									hover = {
+										{
+											fileName = "../gui/main_menu/button_temp_hover.png",
+											color = {1, 1, 1, 1},
+										},
+									},
+								}
+							}, -- end of bttnMusic
+						}, -- end of options menu children
+					}, -- end of options menu
+
+				}, -- end of bgBar Children
+
+			}, -- end of bg bar
+		}, -- end of background children
+
+	}, -- end of background
 }
 
 return data

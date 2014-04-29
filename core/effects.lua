@@ -5,7 +5,7 @@ function effect:init( )
 
 end
 
-function effect:new(_stringName, _x, _y, _animToUse, _maxFrames, _attachTo, _loop)
+function effect:new(_stringName, _x, _y, _animToUse, _maxFrames, _attachTo, _loop, _doOffset)
 	local temp = {
 		name = _stringName,
 		id = #self._effectTable + 1,
@@ -16,6 +16,10 @@ function effect:new(_stringName, _x, _y, _animToUse, _maxFrames, _attachTo, _loo
 		attachment = _attachTo,
 		isLooping = _loop,
 	}
+
+	if _doOffset ~= nil then
+		temp.doOffset = _doOffset
+	end
 	table.insert(self._effectTable, temp)
 
 	return temp.id
@@ -45,7 +49,12 @@ function effect:updateEffect(_id, _x, _y)
 	local tileSize = unit:_getTileSize( )
 	eff.x = _x 
 	eff.y = _y 
-	anim:updateAnim(eff.anim, _x * tileSize - tileSize+offsetX - 16, _y  * tileSize - tileSize+offsetY - 16)
+
+	if eff.doOffset == nil or eff.doOffset == true then
+		anim:updateAnim(eff.anim, _x * tileSize - tileSize+offsetX - 16, _y  * tileSize - tileSize+offsetY - 16)
+	else
+		anim:updateAnim(eff.anim, _x * tileSize - tileSize+offsetX - 8, _y  * tileSize - tileSize+offsetY - 8)
+	end
 
 	if anim:getCurrentFrame(eff.anim) == eff.lastFrame and eff.isLooping ~= true then
 		self:deleteEffect(_id)

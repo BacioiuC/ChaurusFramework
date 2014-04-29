@@ -1,33 +1,21 @@
-
 local data = {
-	widgetlist1 = {
-		widget = "widget list",
-		pos = {82, 0},
-		dim = {28, 100},
-		selectionImage = "selection image.png",
-		maxSelect = 1,
-		rowHeight = 8,
-		columns = {
-			{"", 5, "Image"},
-			{"", 20, "label"},
+	panel = {
+		widget = "image",
+		pos = {0, 0},
+		dim = {100, 100},
+		images = {
+			{
+				fileName = "trans_bg.png",
+			},
+
+		children = {
+			textBox = {
+				widget = "textBox",
+				pos = {0, 0},
+				dim = { 100, 100 },
+
+			},
 		},
-
-	},
-
-	content1 = {
-	widget = "widget list",
-		pos = {150, 5},
-		dim = {15, 100},
-		selectionImage = "selection image.png",
-		maxSelect = 1,
-		rowHeight = 9,
-		columns = { 
-			{"", 10, "label"},
-		},
-
-
 	},
 
 }
-
-return data

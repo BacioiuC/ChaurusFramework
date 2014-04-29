@@ -2,24 +2,63 @@
 data = {
 	textstyles = {
 		default = {
-			font = "arial-rounded.TTF",
-			size = 13,
+			font = "atari full.ttf",
+			size = 14,
+			color = {1, 1, 1},
 		},
 		listselected = {
-			font = "arial-rounded.TTF",
-			size = 13,
-			color = {0, 0, 0, 1}
+			font = "atari full.ttf",
+			size = 14,
+			color = {1, 0.416, 0, 1},
 		},
 		listunselected = {
-			font = "arial-rounded.TTF",
-			size = 13,
-			color = {1, 1, 1, 1}
+			font = "atari full.ttf",
+			size = 14,
+			color = {1, 1, 1},
 		},
 		blue = {
-			font = "arial-rounded.TTF",
-			size = 13,
-			color = {0.1, 0.1, 0.9, 1},
+			font = "atari full.ttf",
+			size = 14,
+			color = {1, 1, 1},
 			
+		},
+		unitInfo = {
+			font = "atari full.ttf",
+			size = 35,
+			color = {1, 1, 1},
+		},
+		buyMenu_coins = {
+			font = "atari full.ttf",
+			size = 18,
+			color = {0.431, 0.569, 0.298, 1}
+		},
+		buyMenu_coins_noCash = {
+			font = "atari full.ttf",
+			size = 18,
+			color = {0.314, 0.306, 0.251}
+		},
+		stats = {
+			font = "atari full.ttf",
+			size = 14,
+			color = {0.682, 0.776, 0.145}
+		},
+		statsBad = {
+			font = "atari full.ttf",
+			size = 14,
+			color = {1, 0.322, 0.122}
+		},
+
+		statsBlue = {
+			font = "atari full.ttf",
+			size = 14,
+			color = {0.204, 0.447, 0.784}
+		},
+
+		commanderBonus = {
+			font = "atari full.ttf",
+			size = 14,
+			color = {1, 0.612, 0},	
+
 		},
 	},
 	label = {

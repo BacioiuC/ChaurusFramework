@@ -1,5 +1,4 @@
 image = {}
-
 --[[
 	Module: @Image.lua, under Game
 	How to:
@@ -114,7 +113,18 @@ function image:newDeckTexture(_fileName, _parrentLayer, _name, _tileSize, _isGri
 	table.insert(self.imageTable, temp)
 
 	local tableIndex = #self.imageTable
-	
+	-- CIG BREAK
+	-- BRB in 8 minutes
+	-------
+
+
+
+
+
+
+
+
+
 	self.imageTable[tableIndex].texture = MOAITexture.new ()
 
 	if self.imageTable[tableIndex].texture ~= nil then
@@ -181,6 +191,7 @@ function image:newDeckImage(_image, _x, _y, _deckTile)
 		
 		self.propTable[tableIndex].prop = MOAIProp2D.new()
 		self.propTable[tableIndex].prop:setDeck(self.imageTable[imageID].image)
+		--self.propTable[tableIndex].prop:setCullMode(MOAIProp.CULL_BACK)
 		self.propTable[tableIndex].texBase = imageID
 		core:returnLayerTable( )[self.imageTable[imageID].layer].layer:insertProp( self.propTable[tableIndex].prop )
 		self.propTable[tableIndex].prop:setIndex(_deckTile)	
@@ -216,6 +227,7 @@ function image:newImage(_image, _x, _y)
 		
 		self.propTable[tableIndex].prop = MOAIProp2D.new()
 		self.propTable[tableIndex].prop:setDeck(self.imageTable[imageID].image)
+		--self.propTable[tableIndex].prop:setCullMode(MOAIProp.CULL_BACK)
 		self.propTable[tableIndex].texBase = imageID
 		core:returnLayerTable( )[self.imageTable[imageID].layer].layer:insertProp( self.propTable[tableIndex].prop )	
 		self.propTable[tableIndex].prop:setLoc(_x, _y)
